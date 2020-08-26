@@ -1653,39 +1653,808 @@ void print(int mat[][100],int n)
 	    }
 	    cout << endl;
 ## Strings
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
-###### 
+###### Naive Pattern Search
+	bool search(string pat, string txt) 
+	{ 
+		int t=txt.find(pat);
+	if(t>=0)
+	return true;
+	return false;
+
+	}
+###### Distinct Pattern Search
+	bool search(string pat, string txt) 
+	{ 
+	    if(txt.find(pat) != string::npos)
+		return true;
+
+	    return false;
+
+	}
+###### Binary String
+	long binarySubstring(int n, string a){
+
+	    auto ones = std::count(a.begin(), a.end(), '1');
+	    return ones * (ones - 1) / 2;
+	}
+###### Implement strstr
+     for(i=0;i<m;i++)
+     {
+         s2=s.substr(i,n);
+         if(s2.compare(x)==0)
+         {
+             return i;
+         }
+     }
+###### Check if string is rotated by two places
+	bool isRotated(string str1, string str2)
+	{
+	    int l = str1.length();
+
+	    bool flag1 = true;
+	    bool flag2 = true;
+	    for(int i=0; i<l; i++)
+	    {
+		if(str1[(i+(l-2))%l] != str2[i])
+		    flag1 = false;
+
+		if(str1[(i+2)%l] != str2[i])
+		    flag2 = false;
+	    }
+
+	    return flag1||flag2 && (str1.length() == str2.length());
+	}
+###### Check if strings are rotations of each other or not
+	bool areRotations(string s1,string s2)
+	{                   
+	    string s3=s1+s1;
+	    /*int n=s1.size()-1,p=0;
+	    for(int i=0;i<s1.size();i++)
+	    {   //s4=s3.substr(i,i+n);
+		if(s2==s3.substr(i, i+n))
+		{    p=1;break;}
+	    }
+	    if(p==1)
+		return 1;
+	    else return 0;*/
+	    if(s1.size()!=s2.size())
+		    return 0;
+	    return (s3.find(s2)!=string::npos);
+	}
+###### Isomorphic Strings
+	bool areIsomorphic(string str1, string str2)
+	{
+	    if(str1.size()!=str2.size()){
+		return 0;
+	    }
+	    int temp1[256]={0};
+	    int temp2[256]={0};
+
+	    for(int i=0;i<str1.length();i++)
+	    {
+		temp1[str1[i]]++;
+		temp2[str2[i]]++;
+
+		if(temp1[str1[i]]==temp2[str2[i]])
+		    continue;
+		else
+		    return false;
+	    }
+	    return true;
+	}
+###### Check if a string is Isogram or not
+	{
+	    std::unordered_set<char> m;
+	    for (auto c : s)
+	    {
+		auto it = m.find(c);
+		if (it != m.end())
+		    return 0;
+		m.insert(c);
+	    }
+	    return 1;
+	}
+###### Keypad typing
+     l=strlen(str) ;
+     for(i=0;i<l;i++)
+     {
+         if(str[i]>='a'&&str[i]<='c')
+             cout<<2 ;
+        else if(str[i]>='d'&&str[i]<='f')
+             cout<<3 ;
+        else if(str[i]>='g'&&str[i]<='i')
+             cout<<4 ;
+        else if(str[i]>='j'&&str[i]<='l')
+             cout<<5 ;
+        else if(str[i]>='m'&&str[i]<='o')
+             cout<<6 ;
+        else if(str[i]>='p'&&str[i]<='s')
+             cout<<7 ;
+        else if(str[i]>='t'&&str[i]<='v')
+             cout<<8 ;
+        else if(str[i]>='w'&&str[i]<='z')
+             cout<<9 ;
+     }
+     cout<<endl ;
+###### Repeating Character - First Appearance Leftmost
+	int repeatedCharacter (string s) 
+	{ 
+	    //Your code here
+	    for(int i = 0; i < s.length(); i++)
+	    {
+		if(s.find(s[i], i+1) != string::npos)
+		    return i;
+	    }
+	return -1;
+	} 
+###### Non Repeating Character
+	char nonrepeatingCharacter(string S)
+	{
+	    unordered_map<char,int> mp;
+	    for(char c : S)
+		mp[c]++;
+	    for(char c :S)
+		if(mp[c] == 1)
+		    return c;
+	    return '$';
+
+	}
+###### Maximum Occuring Character
+	char getMaxOccuringChar(char* str)
+	{                   
+	    map<char,int>map;
+	    for(int i=0;str[i]!='\0';i++)
+		   map[str[i]]++;
+	    int count=0;char ch;
+	    for( auto i:map )
+	    {   if(i.second>count)
+		{   count=i.second;
+		    ch=i.first;
+		}
+	    }
+	    return ch;
+	}
+###### Remove common characters and concatenate
+	string concatenatedString(string s1, string s2) 
+	{ 
+		string ans = "";
+		for(int i=0; i < s1.length(); i++)
+		if(s2.find(s1[i])==string::npos)
+		ans += s1[i];
+		for(int i=0; i < s2.length(); i++)
+		if(s1.find(s2[i])==string::npos)
+		ans += s2[i];
+		return ans;
+	}
+###### Reverse words in a given string
+	void reverseWords(char *s) {    
+	   int count=0,i=0;stack<char>stk;
+	   while(s[i]!='\0'){count++;i++;}
+		for(int i=count-1;i>=0;i--)
+		{   if(s[i]!='.')
+				stk.push(s[i]);
+			else
+				{   while(!stk.empty())
+					{   cout<<stk.top();
+						stk.pop();
+					}
+					cout<<".";
+				}
+		}
+		while(!stk.empty())
+					{   cout<<stk.top();
+						stk.pop();}
+	}
+###### Sum of numbers in string
+	int findSum(string ch)
+	{
+		string temp = "";
+		int sum = 0;
+		for (int i=0;ch[i]!='\0';i++)
+		{
+			if (isdigit(ch[i]))
+				temp += ch[i];
+			else
+			{
+				sum += atoi(temp.c_str());
+				temp = "";
+			}
+		}
+		return sum+atoi(temp.c_str()) ;
+	}
+###### Minimum indexed character
+	void printMinIndexChar(string str, string patt)
+	{       int s1=str.size(),s2=patt.size(),min=max;
+			for(int i=0;i<s2;i++)
+			{   for(int j=0;j<s1;j++)
+				{   if(str[j]==patt[i])
+					{   if(j<min)
+							min=j;
+					}
+				}
+			}
+			if(min!=max)
+				cout<<str[min];
+			else cout<<"No charecter present";
+	}
+###### Smallest window in a string containing all the characters of another string
+	string smallestWindow (string S, string P)
+	{
+		if (S.length() < P.length()) 
+		{ 
+			return "-1"; 
+		} 
+		int hash_pat[256] = {0}; 
+		int hash_str[256] = {0};
+		for (int i = 0; i < P.length(); i++) 
+			hash_pat[P[i]]++; 
+		int start = 0, start_index = -1, min_len = INT_MAX;
+		int count = 0; 
+		for (int j = 0; j < S.length() ; j++) 
+		{ 
+			hash_str[S[j]]++; 
+					if (hash_pat[S[j]] != 0 && 
+				hash_str[S[j]] <= hash_pat[S[j]] ) 
+				count++; 
+			if (count == P.length()) 
+			{ 
+
+				while ( hash_str[S[start]] > hash_pat[S[start]] 
+					|| hash_pat[S[start]] == 0) 
+				{ 
+
+					if (hash_str[S[start]] > hash_pat[S[start]]) 
+						hash_str[S[start]]--; 
+					start++; 
+				} 
+				int len_window = j - start + 1; 
+				if (min_len > len_window) 
+				{ 
+					min_len = len_window; 
+					start_index = start; 
+				} 
+			} 
+		} 
+		if (start_index == -1) 
+		{ 
+		return "-1"; 
+		} 
+
+		return S.substr(start_index, min_len); 
+	}
+###### Nth number made of prime digits
+	string nthprimedigitsnumber(int number) 
+	{ 
+		int rem; 
+		string num; 
+		while (number) { 
+			// remainder for check element position 
+			rem = number % 4; 
+			switch (rem) { 
+			case 1: 
+				num.push_back('2'); 
+				break; 
+			case 2: 
+				num.push_back('3'); 
+				break;  
+			case 3: 
+				num.push_back('5'); 
+				break;  
+			case 0: 
+				num.push_back('7'); 
+				break; 
+			} 
+			number--;
+			number = number / 4; 
+		} 
+		  reverse(num.begin(), num.end());
+		return num; 
+	}
+###### The Modified String
+	int modified (string a){
+		int n=0, insert=0;
+		for(int i=1; i<a.length(); i++){
+			if(a[i]==a[i-1])
+				n++;
+			else{
+				insert+=n/2;
+				n=0;
+			}
+		}
+		insert+=n/2;
+		return insert;
+	}
+###### Case-specific Sorting of Strings
+	string caseSort(string str, int n){
+		string str1 , str2= str;
+		sort(str2.begin(),str2.end());
+		int lowIndex= count_if(str2.begin(),str2.end(),::isupper);
+		for(int i=0,j1=0,j2=lowIndex;i<str.length();i++)
+		{
+			if(islower(str[i]))
+			{
+				str1+=str2[j2++];
+			}
+			else
+			{
+				str1+=str2[j1++];
+			}
+		}
+		return str1;
+	}
+###### Lexicographic Rank Of A String
+	int findRank(string S) 
+	{
+		int res=1;
+		int count[256]={0};
+		int mul=fact(S.length());
+		for(int i=0;i<S.length();i++){
+			if(count[S[i]]==1)
+			   return 0;
+			count[S[i]]++;
+		}
+		for(int i=1;i<256;i++){
+			count[i]=count[i]+count[i-1];
+		}
+		for(int i=0;i<S.length();i++){
+			mul=mul/(S.length()-i);
+			res=res+count[S[i]-1]*mul;
+			for(int j=S[i];j<256;j++){
+				count[j]--;
+			}
+		}
+		return res;
+	}
+###### Rabin Karp - Pattern Searching
+	bool search(string pat, string txt, int q) 
+	{ 
+		int n=txt.length();
+		int m=pat.length();
+		int h=1;
+		for(int i=1;i<m;i++)
+		{
+			h=(h*d)%q;
+		}
+		int p=0,t=0;
+		for(int i=0;i<m;i++)
+		{
+			p=(p*d+pat[i])%q;
+			t=(t*d+txt[i])%q;
+		}
+		for(int i=0;i<=n-m;i++)
+		{
+			if(p==t)
+			{
+				bool flag=true;
+				for(int j=0;j<m;j++)
+					if(txt[i+j]!=pat[j])
+					{
+						flag=false;
+						break;
+					}
+				if(flag==true)
+					return true;
+			}
+			if(i<n-m)
+			{
+				t=((d*(t-txt[i]*h)+txt[i+m]))%q;
+				if(t<0)
+					t=t+q;
+			}
+		}
+		return false;
+	}
+###### Pattern Search KMP
+	void computeLPSArray(string pat, int M, int* lps) 
+	{ 
+		int len=0;
+		lps[0]=0;
+		int i=1;
+		while(i<M)
+		{
+			if(pat[i]==pat[len])
+			{
+				len++;
+				lps[i]=len;
+				i++;
+			}
+			else
+			{
+				if(len==0)
+				{
+					lps[i]=0;
+					i++;
+				}
+				else
+				{
+					len=lps[len-1];
+				}
+			}
+		}
+	} 
+	bool KMPSearch(string pat, string txt) 
+	{
+		int N=txt.length();
+		int M=pat.length();
+		int lps[M];
+		computeLPSArray(pat,pat.length(),lps);
+		int i=0,j=0;
+		while(i<N)
+		{
+			if(pat[j]==txt[i])
+			{
+				i++;
+				j++;
+			}
+			if(j==M)
+			{
+				return true;
+				j=lps[j-1];
+			}
+			else if(i<N && pat[j]!=txt[i])
+			{
+				if(j==0)
+				{
+					i++;
+				}
+				else
+				{
+					j=lps[j-1];
+				}
+			}
+		}
+		return false;    
+	}
+###### Delete without head pointer
+	void deleteNode(Node *node)
+	{
+	   while(node->next->next != NULL){
+		   node->data = node->next->data;
+		   node = node->next;     
+	   }
+		node->data = node->next->data;
+		node->next = NULL;
+	}
+###### Remove duplicates from an unsorted linked list
+	Node *removeDuplicates(Node *root)
+	{
+		Node *p=root,*q=NULL;
+		unordered_set<int>hash;
+
+		while(p!=NULL){
+			if(hash.find(p->data)==hash.end()){
+				hash.insert(p->data);
+				q=p;
+			}
+			else{
+				q->next=p->next;
+				delete p;
+			}
+			p=q->next;
+		}
+		return root;
+
+	}
+###### Merge two sorted linked lists
+	Node* sortedMerge(Node* head_A, Node* head_B)  
+	{           Node *head;
+				Node **ref=&head;
+				while(head_A && head_B)
+				{   if(head_A->data < head_B->data)
+					{   *ref=head_A;
+						head_A=head_A->next;
+					}
+					else
+					{   *ref=head_B;
+						head_B=head_B->next;
+					}
+					ref=&((*ref))->next;
+				}
+				*ref=(head_A)?head_A:head_B;
+				return head;
+	}
+###### Swap Kth nodes from ends
+	Node *swapkthnode(Node* head, int n, int k)
+	{
+		// Your Code here
+		if(k>n) return head;
+		if(2*k-1 == n) return head;
+		Node *x = head;
+		Node *x_prev= NULL;
+		for(int i=1;i<k;i++)
+		{
+			x_prev = x;
+			x = x->next;
+		}
+		Node *y = head;
+		Node *y_prev= NULL;
+		for(int i=1;i<n-k+1;i++)
+		{
+			y_prev = y;
+			y = y->next;
+		}
+		if(x_prev) x_prev->next=y;
+		if(y_prev) y_prev->next=x;
+		Node *temp = x->next;
+		x->next = y->next;
+		y->next = temp;
+		if(k==1) head= y;
+		if(k==n) head= x;
+		return head;
+	}
+###### Detect Loop in linked list
+	int detectloop(Node *head) {
+		Node *x,*x2;
+		x=head;
+		x2=head;
+		int c=0;
+		while(x2!=NULL && x2->next!=NULL){
+			x=x->next;
+			x2=x2->next->next;
+			if(x==x2){
+			c=1;
+			break;
+			}
+		}
+		return c;
+   }
+###### Find length of Loop
+	int countNodesinLoop(struct Node *head)
+	{
+		 int count=0;
+		 if(head==NULL) return 0;
+		 Node *fast=head, *slow=head;
+		 while(fast!=NULL && fast->next!=NULL)
+		 {
+			  fast=fast->next->next;
+			 slow=slow->next;
+			 if(fast==slow)
+			 {
+				 Node *temp=slow;
+				 while(temp->next!=fast)
+				 {
+					 count++;
+					 temp=temp->next;
+				 }
+				 return count+1;
+			 }     
+		 }
+		 return count;
+	}
+###### Remove loop in Linked List
+	void removeTheLoop(Node *head)
+	{
+		Node *slow=head;
+		Node *fast=head->next;
+		Node *prev=NULL;
+		Node *ptr2=NULL;
+		while(slow && fast && fast->next){
+			prev=slow;
+			slow=slow->next;
+			fast=fast->next->next;
+			if(slow==fast){
+
+				Node *ptr=head;
+				while(1){
+					ptr2= slow;
+					 while(ptr2->next!=slow && ptr2->next!=ptr)
+						ptr2=ptr2->next;
+
+					if(ptr2->next==ptr)
+					break;
+
+					ptr=ptr->next; 
+				}
+				ptr2->next=NULL;
+				break;
+			}
+
+		}
+	}
+###### Rotate a Linked List
+	void rotate(struct node **head_ref, int k)
+	{ 
+		 struct node * end = *head_ref;
+		 while(end->next != NULL) end = end->next;
+		 while(k--){
+			 end->next = *head_ref;
+			 end = end->next;
+			 (*head_ref) = (*head_ref)->next;
+		 }
+		 end->next = NULL;
+	}
+###### Add two numbers represented by linked lists
+	Node* addTwoLists(Node* first, Node* second) 
+	{
+		Node *res =NULL, *prev = NULL, *temp;
+		int carry = 0, sum;
+		while(first !=NULL || second != NULL)
+		{
+			sum = carry + (first? first->data: 0) + (second? second->data: 0);
+			carry = (sum>=10 ? 1:0);
+			sum = sum%10;
+			temp = new Node(sum);
+			if(res == NULL)
+				res =temp;
+			else
+				prev->next =temp;
+			prev = temp;
+			if(first) 
+				first = first->next;
+			if(second)
+				second = second->next;
+		}
+		if(carry>0)
+			temp->next = new Node(carry);
+		return res;
+	}
+###### Pairwise swap of nodes in LinkeList
+	struct Node* pairwise_swap(struct Node* head)
+	{
+	   Node *newhead; 
+	   Node *nex1; 
+	   if(head==NULL||head->next==NULL)
+	   return head; 
+	   nex1=head->next->next; 
+	   newhead=head->next;
+	   newhead->next=head; 
+	   head->next=pairwise_swap(nex1); 
+	   return newhead;
+	}
+###### Check if Linked List is Palindrome
+	bool isPalindrome(Node *head)
+	{
+		Node *curr = head;
+		stack<int> st;
+		while(curr!=NULL)
+		{
+			st.push(curr->data);
+			curr = curr->next;
+		}
+		curr = head;
+		while(curr!=NULL)
+		{
+			if(st.top() != curr->data)
+				return 0;
+			st.pop();
+			curr = curr->next;
+		}
+		return 1;
+	}
+###### Merge Sort for Linked List
+	Node* midPoint(Node* a) {
+		if(a == NULL || a->next == NULL) {
+			return a;
+		}
+		Node* slow = a;
+		Node* fast = a->next;
+		while(fast != NULL && fast->next != NULL) {
+			fast = fast->next->next;
+			slow = slow->next;
+		}
+		return slow;
+	}
+	Node* merge(Node* a, Node* b) {
+		if(a == NULL) {
+			return b;
+		}
+		else if(b == NULL) {
+			return a;
+		}
+		Node* c;
+		if(a->data < b->data) {
+			c  = a;
+			c->next = merge(a->next, b);
+		}
+		else {
+			c = b;
+			c->next = merge(a, b->next);
+		}
+		return c;
+	}
+	Node* mergeSort(Node* a) {
+		if(a == NULL || a->next == NULL) {
+			return a;
+		}
+		Node* mid = midPoint(a);
+		Node* aa = a;
+		Node* b = mid->next;
+		mid->next = NULL;
+		aa = mergeSort(a);
+		b = mergeSort(b);
+
+		Node* c = merge(aa, b);
+		return c;
+	}
+###### Given a linked list of 0s, 1s and 2s, sort it 
+	Node* segregate(Node *head) {
+		Node* temp=head;
+		  int m[3]={0};                                 //to store count of 0 ,1 and 2 
+		while(temp!=NULL)
+		{
+			m[temp->data]++;
+			temp=temp->next;
+		}
+		temp=head;
+		int i=0;
+		while(temp!=NULL)
+		{
+			while(m[i]!=0)                               //till count does not become zero of a number(0,1 and 2)
+
+			{
+				temp->data=i;                           //keep assigning to data of node
+				m[i]--;
+				temp=temp->next;
+			}
+			i++;
+		}
+		return head;
+	}
+###### Merge Sort on Doubly Linked List
+	struct node *splitList(struct node *head)
+	{
+		node* slow=head,*fast=head;
+		while(1){
+			fast = fast->next;
+			if(fast==NULL||fast->next==NULL){
+				node* t=slow->next;
+				slow->next=NULL;
+				t->prev=NULL;
+				return t;
+			} 
+			fast=fast->next;
+			slow = slow->next;
+		}
+	}
+	struct node *merge(struct node *first, struct node *second){
+		// Code here
+		if(first==NULL){return second;}
+		if(second==NULL) return first;
+		if(first->data<second->data){
+			first->prev=NULL;
+			first->next=merge(first->next,second);
+			if(first->next) first->next->prev=first;
+			return first;
+		} else{
+			second->prev=NULL;
+			second->next=merge(first,second->next);
+			if(second->next) second->next->prev=second;
+			return second;
+		}
+	}
+###### Merge K sorted linked lists
+
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
+######
