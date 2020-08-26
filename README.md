@@ -4885,8 +4885,336 @@ int countSmallerRight(int a[], int n) {
 			(total * (total - 1)) ; // total possible combinations of 2 knights
 		return (total - ret) % MOD; // returning total feasible combinations
 	}
+###### Combination Sum
+	void findNumbers(vector<int>& ar, int sum, vector<vector<int>>& res, vector<int>& r, int i) 
+	{ 
+	    if (sum < 0) 
+		return; 
+	    if (sum == 0) 
+	    { 
+		res.push_back(r); 
+		return; 
+	    } 
+	    while (i < ar.size() && sum - ar[i] >= 0) 
+	    { 
+		r.push_back(ar[i]); // add them to list 
+		findNumbers(ar, sum - ar[i], res, r, i); 
+		i++; 
+		r.pop_back(); 
+	    } 
+	} 
+	vector<vector<int> > combinationSum(vector<int> &A, int B) {
+	    sort(A.begin(),A.end());
+	    A.erase(unique(A.begin(), A.end()), A.end()); 
+	    vector<int> r; 
+	    vector<vector<int> > res; 
+	    findNumbers(A, B, res, r, 0); 
+	    return res; 
+	}
+
+###### Subsets
+	void findSub(vector<vector<int>> &res,vector<int> &subset,vector <int> &A,int index ){
+	    res.push_back(subset);
+	    for(int i=index;i<A.size();i++){
+		if(i!=index && A[i]==A[i-1])
+		    continue;
+		subset.push_back(A[i]);
+		findSub(res,subset,A,i+1);
+		subset.pop_back();
+	    }
+	}
+	void func (vector <int> A)
+	{
+	    vector<vector<int>> res;
+	    vector<int> subset;
+	    sort(A.begin(),A.end());
+	    findSub(res,subset,A,0);
+	     for(auto x:res){
+		cout<<"(";
+		for(int i = 0; i<x.size(); i++)
+		    if(i==x.size()-1)cout<<x[i];
+		    else cout<<x[i]<<" ";
+		cout<<")";
+	    }
+	    cout<<endl;    
+	}
+###### M-Coloring Problem
+	bool isSafe(bool graph[101][101],int i,int j,int V,vector<int> &color){
+	    for(int k=0;k<V;k++){
+		if(graph[i][k]==1 && color[k]==j) return false;
+
+	    }
+	    return true;
+	}
+	bool checkColor(bool graph[101][101], int m, int V,vector<int> &color,int i){
+	    if(i==V) return true;
+	    for(int j=0;j<m;j++){
+		if(isSafe(graph,i,j,V,color)){
+		    color[i]=j;
+		    if(checkColor(graph,m,V,color,i+1))
+			return true;
+		    color[i]=-1;
+		}
+	    }
+	    return false;
+	}
+	bool graphColoring(bool graph[101][101], int m, int V) {
+	    vector<int> color(V,-1);
+	    return checkColor(graph,m,V,color,0);
+	}
+###### Solve the Sudoku
+	bool isSafe(int grid[N][N],int i,int j,int n){
+	    for(int k=0;k<N;k++){
+		if(grid[i][k]==n || grid[k][j]==n)
+		    return false;
+	    }
+	    int sub=sqrt(N);
+	    int rsub=i-i%sub;
+	    int lsub=j-j%sub;
+	    for(int k=0;k<sub;k++){
+		for(int l=0;l<sub;l++){
+		    if(grid[k+rsub][l+lsub]==n)
+			return false;
+		}
+	    }
+	    return true;
+	}
+	bool SolveSudoku(int grid[N][N])  
+	{ 
+	    int i,j;
+	    for(i=0;i<N;i++){
+	       bool flag=false;
+		for(j=0;j<N;j++){
+		    if(grid[i][j]==0){
+			flag=true;
+			break;
+		    }
+		}
+		if(flag)
+		    break;
+	    }
+	    if(i==N && j==N)
+		return true;
+	    for(int k=1;k<=9;k++){
+		if(isSafe(grid,i,j,k)){
+		grid[i][j]=k;
+		if(SolveSudoku(grid))
+		    return true;
+		grid[i][j]=0;
+		}
+	    }
+	    return false;
+	}
+	void printGrid (int grid[N][N]) 
+	{
+	    for(int i=0;i<N;i++){
+		for(int j=0;j<N;j++)
+		    cout<<grid[i][j]<<" ";
+	    }
+	}
+
+## Dynamic Programming
+###### Fibonacci Numbers
+long long findNthFibonacci(int number)
+{
+    long long int dp[number+1]; 
+    dp[0]=0; 
+    dp[1]=1; 
+    for(long long int i=2;i<=number;i++)
+    {
+        dp[i]=dp[i-1]+dp[i-2];
+    }  
+    return dp[number];
+}
+###### Coin Change - Minimum number of coins
+	long long minimumNumberOfCoins(int coins[],int m,int V)
+	{
+	    int dp[V+1]; 
+	    dp[0] = 0; 
+
+	    for (int i=1; i<=V; i++) 
+		dp[i] = INT_MAX;       
+	    for (int i=1; i<=V; i++) 
+	    { 
+		for (int j=0; j<m; j++) 
+		  if (coins[j] <= i) 
+		  { 
+		      int sub_res = dp[i-coins[j]]; 
+		      if (sub_res != INT_MAX && sub_res + 1 < dp[i]) 
+			  dp[i] = sub_res + 1; 
+		  } 
+	    } 
+	    if(dp[V]!=INT_MAX)
+		return dp[V];
+	    else
+		return -1;
+	}
+###### Coin Change - Number of ways
+	long long numberOfWays(int coins[],int numberOfCoins,int value)
+	{   
+	    long long ways[value+1]={0}; //We declare an array that will contain the number of--
+	    ways[0]=1; //We can make change for 0 in 1 ways, that is by choosing nothing.
+	    vector<int> coinsSet;
+
+	    for(int i=0;i<numberOfCoins;i++)
+	    {
+		coinsSet.push_back(coins[i]);
+	    } 
+	    for(auto coin:coinsSet) //Using a coin, one at a time
+	    {
+		for(int i=1;i<value+1;i++)
+		{
+		    if(i>=coin) //Since it makes no sense to create change for value smaller than coin's denomination
+		       ways[i]=ways[i]+ways[i-coin];
+		}
+	    }
+	    return ways[value];
+	}
+
+###### Print first n Fibonacci Numbers
+	vector<long long> printFibb(int n) {
+	    vector<long long>fib(n);
+	    fib[0]=1;
+	    fib[1]=1;
+	    for(int i=2;i<n;i++){
+		fib[i]=fib[i-1]+fib[i-2];
+	    }
+	    return fib;
+	}
+###### Nth catalan number
+	using boost::multiprecision::cpp_int;
+	cpp_int coefficient(int n,int k){
+	    cpp_int res=1;
+	    for(int i=0;i<k;i++){
+		res=res*(n-i);
+		res=res/(i+1);
+	    }
+	    return res;
+	}
+	cpp_int result=coefficient(2*n,n);
+	cout<<result/(n+1)<<endl;
+######  Reach a given score 
+	int count{
+	    int table[n+1];
+	    memset(table,0,sizeof(table));
+	    table[0]=1;
+	    for(int i=3;i<=n;i++)
+	    {
+		table[i]+=table[i-3];
+	    }
+	    for(int i=5;i<=n;i++)
+	    {
+		table[i]+=table[i-5];
+	    }
+	    for(int i=10;i<=n;i++)
+	    {
+		table[i]+=table[i-10];
+	    }
+	    return table[n];
+	}
+	
+###### Minimum number of jumps
+
+	int minimumjumps(int arr[],int n){
+		// code here
+		int dp[n];
+		dp[0]=0;
+		for(int i=1;i<n;i++)
+		{
+			dp[i]=INT_MAX;
+			for(int j=0;j<i;j++)
+			{
+				if(j+arr[j]>=i)
+				{
+					if(dp[j]!=INT_MAX)
+					dp[i]=min(dp[i],dp[j]+1);
+				}
+			}
+		}
+	if(dp[n-1]!=INT_MAX)
+	return dp[n-1];
+	return -1;
+
+	}
+###### Ways to write n as sum
+	int countWays(int n)
+	{
+		// your code here
+		long long int M=1000000000+7;
+		long long int dp[n+1] = {0};
+		dp[0] = 1;
+		for( int i = 1 ; i < n ; i++ ){
+		for( int j = i ; j <= n ; j++ ){
+		dp[j] += (dp[j-i] % M) ;
+		}
+		}
+		return dp[n]%M;
+	}
+###### Count ways to reach the n'th stair
+	long long countWays(int m){
+		int M=int(1e9)+7;
+		long long int dp[m+1];
+		dp[1]=1;
+		dp[2]=2;
+
+		for(int i=3;i<=m;i++){
+			dp[i]=(dp[i-1]+dp[i-2])%M;
+		}
+		return dp[m];
+	}
+###### Count ways to N'th Stair(Order does not matter)
+	long long countWays(int m){
+		long long table[1000001]={0};
+		table[0]=1;
+		//table[1]=1;
+		for(long long i=1;i<=1000000;i++)
+		{
+			table[i]+=table[i-1];
+		}
+		for(long long i=2;i<=1000000;i++)
+		{
+			table[i]+=table[i-2];
+		}
+		return table[m];
+	}
+###### Count number of hops
+	long long countWays(int n){ 
+		long long int dp[n+1];
+		long long int M=int(1e9)+7;
+		dp[1]=1;
+		dp[2]=2;
+		dp[3]=4;
+		for(int i=4;i<=n;i++){
+			dp[i]=(dp[i-1]+dp[i-2]+dp[i-3])%M;
+		}
+		return dp[n];
+	}
+###### nCr
+	int nCrModp(int n, int r) 
+	{ 
+		if(n<r) return 0;
+		if(r==0) return 1;
+		if(n==r) return 1;
+		if(r>n-r) r=n-r;
+		long long dp[r+1]={0};
+	  dp[0]=1;
+	  for(int i=1;i<=n;i++)
+	  {
+		  for(int j=min(i,r);j>0;j--)
+		  dp[j] = (dp[j]%1000000007+dp[j-1]%1000000007)%1000000007;
+	  }
+	  return dp[r]; 
+	} 
+
+###### Kadane's Algorithm - I
+
+###### 
+######
 ###### 
 ###### 
 ###### 
+######
 ###### 
 ###### 
+###### 
+######
