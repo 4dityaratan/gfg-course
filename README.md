@@ -2423,11 +2423,143 @@ void print(int mat[][100],int n)
 		}
 	}
 ###### Merge K sorted linked lists
+	Node *merge(Node *p,Node *q)
+	{
+	    if(p==NULL)
+	    return q;
+	    if(q==NULL)
+	    return p;
+	    Node *head;
+	    if(p->data<q->data)
+	    {
+		head=p;
+		head->next=merge(p->next,q);
+	    }
+	    else
+	    {
+		head=q;
+		head->next=merge(q->next,p);
+	    }
+	    return head;
+	}
+	Node * mergeKList(Node *arr[], int N)
+	{
+	    int n=N;
+	    if(N<2)
+	    {
+		if(n==1)
+		return arr[0];
+		else 
+		return NULL;
+	    }
+	    Node *head=merge(arr[0],arr[1]);
+	    for(int i=2;i<n;i++)
+	    {
+		head=merge(head,arr[i]);
+	    }
+	    return head;
+	}
+###### Intersection Point in Y Shapped Linked Lists
+	int intersectPoint(Node* head1, Node* head2)
+	{
+	    unordered_set<Node*>set;
+	    while(head1->next != NULL)
+	    {
+		set.insert(head1);
+		head1 = head1->next;
+	    }
 
-######
-######
-######
-######
+	    int flag = 0;
+	    while(head2->next != NULL)
+	    {
+		if(set.find(head2) != set.end())
+		{
+		    flag = 1;
+		    return head2->data;
+		}
+		head2 = head2->next;
+	    }
+	    return -1;
+	}
+###### Clone a linked list with next and random pointer
+	Node * copyList(Node *head)
+	{
+	     // Your code here
+	     map <Node*, Node*> hash;
+	     Node *p = head;
+	     Node *head1 = create(p->data);
+	     Node *temp = head1;
+	     hash.insert(pair <Node*, Node*> (p, head1));
+	     p=p->next;
+	     while(p)
+	     {
+		 Node *q = create(p->data);
+		 hash.insert(pair <Node*, Node*> (p, q));
+		 temp->next = q;
+		 temp = temp->next;
+		 p = p->next;
+	     }
+	     p = head;
+	     Node *q = head1;
+	     while(p){
+		 q->arb = hash[p->arb];
+		 q=q->next;
+		 p=p->next;
+	     }
+	     return head1;
+
+	}
+###### Add two numbers represented by Linked List
+	Node* addSameSize(Node* head1, Node* head2, int* carry) {
+	    if (head1 == nullptr) return nullptr; 
+	    Node* result =  new Node(); 
+	    result->next = addSameSize(head1->next, head2->next, carry);
+	    int sum = head1->data + head2->data + *carry; 
+	    *carry = sum / 10; 
+	    sum %= 10; 
+	    result->data = sum;
+	    return result; 
+	} 
+	void addCarryToRemaining(Node* head1, Node* curr, int* carry, Node** result) { 
+	    if (head1 == curr) return;
+
+	    addCarryToRemaining(head1->next, curr, carry, result);
+	    int sum = head1->data + *carry;
+	    *carry = sum / 10;
+	    sum %= 10; 
+	    push(result, sum); 
+	} 
+###### LRU Cache
+    int get(int key)
+    {
+        if(mp.find(key) == mp.end())
+            return -1;
+            
+        auto it = mp[key];
+        int val = it->second;
+        lst.erase(it);
+        lst.push_front({key, val});
+        mp[key] = lst.begin();
+        
+        return val;
+    }   
+    void set(int key, int value)
+    {
+        if(mp.find(key) == mp.end()){
+            if(lst.size() == size){
+                auto last = lst.back();
+                mp.erase(last.first);
+                lst.pop_back();
+            }
+        }
+        else{
+            auto it = mp[key];
+            lst.erase(it);
+        }
+          
+        lst.push_front({key, value});
+        mp[key] = lst.begin();
+    }
 ######
 ######
 ######
