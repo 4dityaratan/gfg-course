@@ -2913,14 +2913,1980 @@ void print(int mat[][100],int n)
 		 return ((root->data==l+r) && isSumProperty(root->left) && isSumProperty(root->right));
 	}
 ###### Level order traversal Line by Line
+	void levelOrder(Node* node)
+	{
+	 queue<Node*> q;
+	 q.push(node);
+	 while(1)
+	 {
+		 int size = q.size();
+		 if(size == 0)
+			break;
+		 while(size>0)
+		 {
+			 node = q.front();
+			 q.pop();
+			 cout<<node->data<<" ";
+			 if(node->left)
+			 q.push(node->left);
+			 if(node->right)
+			 q.push(node->right);
+			 size--;
+		 }
+		 cout<<"$ ";
+	 }
+	}
+###### Level order traversal in spiral form
+	void printSpiral(Node *root)
+	{
+		if(root==NULL)
+		return;
+		queue<Node*>q;
+		q.push(root);
+		int n=false;
+		while(!q.empty()){
+			int size=q.size();
+			vector<int>v(size);
+			for(int i=0;i<size;i++){
+				Node* temp=q.front();
+				q.pop();
+				int index=(n)?i:(size-1-i);
+				v[index]=temp->data;
+				if(temp->left)
+				q.push(temp->left);
+				if(temp->right)
+				q.push(temp->right);
+			}
+			n=!n;
+			for(auto it=v.begin();it!=v.end();it++)
+			cout<<*it<<" ";
+			v.clear();
+		}
+	}
+###### Maximum Width of Tree
+	int getMaxWidth(Node* root)
+	{
+	   int maxwidth = 0, ans = 1;
+	   queue<Node*> q;
+	   if(!root) return 0;
+	   q.push(root);
+	   int n = 0;
+	   while(!q.empty()) {
+		   if(maxwidth >= q.size())
+				maxwidth = 0;
+		   Node* top = q.front();
+		   q.pop();
+		   if(top->left) {
+			   maxwidth++;
+			   q.push(top->left);
+		   }
+		   if(top->right) {
+			   maxwidth++;
+			   q.push(top->right);
+		   }
+		   ans = max(ans, maxwidth);
+	   }
+	   return ans;
+	}
+###### Check for Balanced Tree
+	int height(Node* root)
+	{
+		if(root==nullptr)
+		return 0;
+		return 1+max(height(root->left), height(root->right));
+	}
+	bool isBalanced(Node *root)
+	{
+		if(root==nullptr)
+		return 1;
+		int l = height(root->left);
+		int r = height(root->right);
+		if(abs(l-r)<=1 &&isBalanced(root->left) && isBalanced(root->right))
+			return 1;
+		return 0;
+	}
+###### Left View of Binary Tree
+	int mxlevel=-1;
+	void printLeftView(Node *root,int level){
+		if(root == NULL) return;
+		if(level > mxlevel){
+			mxlevel = level;
+			cout<<root->data<<" ";
+		}
+		printLeftView(root->left,level+1);
+		printLeftView(root->right,level+1);
+	}
+	void leftView(Node *root){
+	   mxlevel = -1;
+	   if(root==NULL) return;
+	   printLeftView(root,0);
+	}
+###### Right View of Binary Tree
+	void rightView(Node *root)
+	{
+		if(root==NULL)
+			return ;
+		queue<Node*>Q;
+		Q.push(root);
+		Q.push(NULL);
+		while(Q.front()!=NULL){
+			Node *x=Q.front();
+			Q.pop();
+			while(x!=NULL){
+				if(x->left)
+					Q.push(x->left);
+				if(x->right)
+					Q.push(x->right);
+				if(Q.front()==NULL)
+					cout<<x->data<<" ";
+				x=Q.front();
+				Q.pop();
+			}
+			Q.push(NULL);
+		}
+	}
+###### Lowest Common Ancestor in a Binary Tree
+	Node * lca(Node* root ,int n1 ,int n2 )
+	{ 
+		if(root==NULL)
+			return NULL;
+		if(root->data==n1)
+			return root;
+		if(root->data==n2)
+			return root;
+		Node *l=lca(root->left,n1,n2);
+		Node *r=lca(root->right,n1,n2);
+		if(l && r) return root;
+		if(l==NULL && r==NULL) return l;
+		if(l) return l;
+		if(r) return r;
+	}
+###### Diameter of Binary Tree
+	int d = 0;
+	int compute(Node* node){
+		if(node == NULL)return 0;
+		if(node->left == NULL && node -> right == NULL) return 1;
+		int leftHeight = compute(node->left);
+		int rightHeight = compute(node->right);
+		d = max(d,leftHeight+rightHeight+1);
+		return (1+max(leftHeight,rightHeight));
+	}
+	int diameter(Node* node)
+	{
+	   d = 0;
+	   compute(node);
+	   return d;
+	}
+###### Vertical Width of a Binary Tree
+	int l;
+	int r;
+	void func(Node* root,int pos)
+	{
+		if(root == NULL)
+			return;
 
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
+		if(pos < 0)
+			l = max(l,abs(pos));
+		else
+			r = max(r,pos);
+
+		func(root->left,pos-1);
+		func(root->right,pos+1);
+	}
+
+	int verticalWidth(Node* root)
+	{
+		l = 0;
+		r = 0;
+		func(root,0);
+		return l+r+1;
+	}
+###### Mirror Tree
+	void mirror(Node* node) 
+	{
+		 if(node == NULL){
+			 return;
+		 }
+		 else{
+			 mirror(node->left);
+			 mirror(node->right);
+
+			 Node *temp = node->left;
+			 node->left = node->right;
+			 node->right = temp;
+		 }
+	}
+###### Check if subtree
+	bool isidentical(Node *t1,Node *t2)
+	{
+		if(t1==NULL&&t2==NULL)
+		return true;
+		if(t1==NULL || t2==NULL) return false;
+		bool l=isidentical(t1->left,t2->left);
+		bool r=isidentical(t1->right,t2->right);
+		if(t1->key==t2->key&&l&&r)
+		{
+		 return true;   
+		}
+		else
+		return false;
+	}
+	bool isSubtree(Node*  T1,Node * T2)
+	{
+		if(T1==NULL&&T2==NULL)
+		return true;
+		if(T1==NULL || T2==NULL) return false;
+		if(T1->key==T2->key)
+		{
+			if(isidentical(T1,T2)==true)
+			return true;
+			else
+			{
+				bool l=isSubtree(T1->left,T2);
+				bool r=isSubtree(T1->right,T2);
+				return l||r;
+			}
+		}
+		bool l=isSubtree(T1->left,T2);
+		bool r=isSubtree(T1->right,T2);
+		return l||r;
+
+	}
+###### Make Binary Tree From Linked List
+	void convert(node *head,TreeNode * &root)
+	{
+		if(head==NULL)
+		return;
+		root=newnode(head->data);
+		head=head->next;
+		queue<TreeNode *> q;
+		q.push(root);
+		while(head)
+		{
+			TreeNode *t=q.front();
+			q.pop();
+			t->left=newnode(head->data);
+			q.push(t->left);
+			if(head)
+			head=head->next;
+			if(head)
+			{
+				t->right=newnode(head->data);
+				q.push(t->right);
+				head=head->next;
+			}
+		}
+	}
+###### Binary Tree to DLL
+	void bToDLL(Node *root, Node **head)
+	{
+		if(root==NULL) return;
+		static Node* prev= NULL;
+		bToDLL(root->left,head);
+		if(*head==NULL)
+		{
+			prev=NULL;
+			*head = root;
+		}
+		else
+		{
+			root->left = prev;
+			prev->right=root;
+		}
+		prev = root;
+		bToDLL(root->right,head);
+	}
+######  Binary Tree to CDLL 
+	Node *bTreeToCList(Node *root)
+	{
+		Node *cur = root;
+		Node *head = NULL, *last;
+		stack<Node *> st; 
+		while(cur || !st.empty()) {
+			while(cur){
+				st.push(cur);
+				cur = cur->left;
+			}
+			cur = st.top();
+			st.pop();
+			Node *temp = newNode(cur->data);
+			if(!head){
+				head = temp;
+				last = head;
+			}
+			else{
+				temp->left = last;
+				last->right = temp;
+				last = temp;
+			}
+			cur = cur->right;
+		}
+		last->right = head;
+		head->left = last;
+		return head;
+	}
+###### Connect Nodes at Same Level
+	void connect(Node *p){
+	   queue< Node * > qq;
+	   qq.push(p);
+	   while(!qq.empty()){
+		   int sz = qq.size();
+		   while(sz > 0){
+			   Node* node = qq.front();
+			   qq.pop();
+			   if(sz > 1){
+				   node->nextRight = qq.front();
+			   }else{
+				   node->nextRight = NULL;
+			   }
+			   if(node->left != NULL)
+			   qq.push(node->left);
+			   if(node->right != NULL)
+			   qq.push(node->right);
+			   sz--;
+		   }
+	   }
+	}
+###### Construct Binary Tree from Parent Array
+	Node* createTree(int parent[], int n)
+	{
+		Node* root;
+		Node* a[n];
+		for(int i=0;i<n;i++){
+			a[i] = (Node*)malloc(sizeof(Node));
+			a[i]->data = i;
+		}
+		bool hasLeft[n];
+		for(int i=0;i<n;i++)
+			hasLeft[i] = false;
+		for(int i=0;i<n;i++){
+			int p=parent[i];
+			if(parent[i] == -1) root = a[i];
+			else{
+				if(hasLeft[p]){
+					a[p]->right = a[i];
+				}
+				else{
+					a[p]->left = a[i];
+					hasLeft[p] = true;
+				}
+			}
+		}
+		return root;
+	}
+###### Tree from Postorder and Inorder
+	Node *tree(int in[],int post[],int l,int r)
+	{
+		if(l>r)
+		{
+			return NULL;
+		}
+		Node *q=newnode(post[x]);
+		x--;
+		if(l==r)
+		{
+			return q;
+		}
+		int k;
+		for(int i=l;i<=r;i++)
+		{
+			if(in[i]==q->data)
+			{
+				k=i;
+			}
+		}
+		q->right=tree(in,post,k+1,r);
+		q->left=tree(in,post,l,k-1);
+		return q;
+	}
+	Node *buildTree(int in[], int post[], int n)
+	{
+		x=n-1;
+		Node *p=tree(in,post,0,n-1);
+		return p;
+	}
+###### Foldable Binary Tree
+	bool check(node *p1, node *p2)
+	{
+		if(p1 == NULL && p2 == NULL)
+			return true;
+
+		if(p1 == NULL || p2 == NULL)
+			return false;
+
+		bool l,r;
+		l = check(p1->left,p2->right);
+		r = check(p1->right,p2->left);
+
+		return l and r;
+	}
+
+	bool isFoldable(struct node *root)
+	{
+		return check(root,root);
+	}
+###### Maximum path sum from any node
+	int findMaxUtil(Node* root, int &res)
+	{
+		if(root)
+		{
+			int l=findMaxUtil(root->left,res);
+			int r=findMaxUtil(root->right,res);
+			int p=root->data;
+			int mx=max(max(l,r)+p,p);
+			res=max(res,max(mx,l+r+p));
+			return mx;
+		}
+		return 0;
+	}
+###### Maximum difference between node and its ancestor
+	int ans = -1;
+	int find(Node* root){
+		if(root == NULL) return INT_MAX;
+		if(root->left == NULL && root-> right == NULL) return root->data;
+		int lMin = find(root->left);
+		int rMin = find(root->right);
+		ans = max(ans,root->data - min(lMin,rMin));
+		return min(root->data,min(lMin,rMin));
+	}
+	int maxDiff(Node* root)
+	{
+		ans = -1;
+		find(root);
+		return ans;
+	}
+###### Count Number of SubTrees having given Sum
+	int sum(Node *root){
+		if(root==NULL){
+			return 0 ;
+		}
+		return root->data+sum(root->left)+sum(root->right) ;
+	}
+	int countSubtreesWithSumX(Node* root, int x)
+	{
+		if (!root)return 0;
+		if(sum(root) == x){
+			return 1+countSubtreesWithSumX(root->left , x)+countSubtreesWithSumX(root->right , x);   
+		}
+		else{
+			return countSubtreesWithSumX(root->left , x)+countSubtreesWithSumX(root->right , x) ;
+		}	
+	}
+###### Serialize and Deserialize a Binary Tree
+	void serialize(Node *root,vector<int> &A)
+	{
+		if(root == NULL)
+			A.push_back(-1);
+		else
+		{
+			A.push_back(root->data);
+			serialize(root->left,A);
+			serialize(root->right,A);
+		}
+	}
+	struct Node *newnode(int d)
+	{
+		struct Node *add = new Node;
+		add->left = NULL;
+		add->right = NULL;
+		add->data = d;
+		return add;
+	}
+	Node * deSerialize(vector<int> &a)
+	{
+		struct Node *k;
+		if(!a.empty())
+		{
+			if(a[0] == -1)
+			{
+				a.erase(a.begin()+0);
+				return NULL;
+			}
+			else
+			{
+				k = newnode(a[0]);
+				a.erase(a.begin()+0);
+				k->left = deSerialize(a);
+				k->right = deSerialize(a);
+				return k;
+			}
+		}
+	}
+###### Node at distance
+	void kDistantFromLeafUtil(Node* node, int path[], bool visited[], int pathLen, int k)
+	{
+		if(node)
+		{
+			path[pathLen]=node->key;
+			visited[pathLen]=false;
+			if(!node->left&&!node->right&&(pathLen-k)>=0)
+			{
+				if(visited[pathLen-k]==false)
+				{
+					counter++;
+					visited[pathLen-k]=true;
+				}
+			}
+			kDistantFromLeafUtil(node->left,path,visited,pathLen+1,k);
+			kDistantFromLeafUtil(node->right,path,visited,pathLen+1,k);
+		}
+	}
+###### ZigZag Tree Traversal
+	vector <int> zigZagTraversal(Node* root)
+	{
+		queue<Node*>q;
+		q.push(root);
+		vector<int>res;
+		int n=true;
+		while(!q.empty()){
+			int size=q.size();
+			vector<int>row(size);
+			int index;
+			for(int i=0;i<size;i++){
+				Node* temp=q.front();
+				q.pop();
+				index=(n)?i:(size-i-1);
+				row[index]=temp->data;
+				if(temp->left)
+				q.push(temp->left);
+				if(temp->right)
+				q.push(temp->right);
+			}
+			std::copy(row.begin(),row.end(),std::back_inserter(res));
+			row.clear();
+			n=!n;
+		}
+		return res;
+	}
+###### Maximum sum of Non-adjacent nodes
+	int getMaxSum(Node *root) 
+	{
+
+		if(root==NULL) return 0;
+		int include=0,exclude=0;
+		if(root->left) include+= getMaxSum(root->left->left)+getMaxSum(root->left->right);
+		if(root->right) include+= getMaxSum(root->right->left)+getMaxSum(root->right->right);
+		include+=root->data;
+
+		exclude+=getMaxSum(root->left)+getMaxSum(root->right);
+		return max(include,exclude);
+	}
+## Binary Search Tree
+
+###### Check for BST
+	bool checkBST(Node* root,int mn,int mx){
+		if(root == NULL) return true;
+		if(root->data <= mn || root->data >= mx)return false;
+		return checkBST(root->left,mn,root->data) && checkBST(root->right,root->data,mx);
+	}
+	bool isBST(Node* root) {
+		return checkBST(root,INT_MIN,INT_MAX);
+	}
+###### Minimum element in BST
+	int minValue(struct node* root)
+	{
+		if(root->left==NULL)
+		{
+			return root->data;
+		}
+		while(root->left!=NULL)
+		{
+			root=root->left;
+		}
+		minValue(root);
+	}
+###### Print Common Nodes in two BSTs
+	void getValues(Node *root, set<int> *s)
+	{
+		if(root)
+		{
+			s->insert(root->data);
+			getValues(root->left,s);
+			getValues(root->right,s);
+		}
+	}
+	void printCommon(Node *root1, Node *root2)
+	{
+		 set<int> s1;
+		 set<int> s2;  
+		 getValues(root1,&s1);
+		 getValues(root2,&s2);
+		 set<int> :: iterator it;
+		 for(it=s1.begin();it!=s1.end();it++)
+		 {
+			 set<int> :: iterator it2;
+			 it2=s2.find(*it);
+			 if(it2!=s2.end())
+			 {
+				 cout<<*it<<" ";
+			 }
+		 }
+		 cout<<endl;
+	}
+###### Lowest Common Ancestor in a BST
+	Node* LCA(Node *root, int n1, int n2)
+	{
+		if(root==NULL) return NULL;
+		if((n1<root->data)&&(n2<root->data))
+		return LCA(root->left,n1,n2);
+		if((n1>root->data)&&(n2>root->data))
+		return LCA(root->right,n1,n2);
+		return root;
+	}
+###### Print BST elements in given range
+	void printNearNodes(Node *root, int l, int h)
+	{   
+	  if(root==NULL)
+	  {return;}
+	  printNearNodes(root->left,l,h);
+	  if(root->data>=l&&root->data<=h)
+			cout<<root->data<<" ";
+	  printNearNodes(root->right,l,h);
+	}
+###### Pair Sum in BST
+	unordered_map<int,bool> m;
+	bool Pair(Node* root, int sum) {
+		if(root == NULL)
+			return false;
+		bool l,r;
+		l = Pair(root->left,sum);
+		if(m[sum-root->data])
+			return true;
+		m[root->data] = true;
+		r = Pair(root->right,sum);
+		return l or r; 
+	}
+
+	bool findPair(Node* root, int sum) {
+		m.clear();
+		return Pair(root,sum);
+	}
+###### Floor in BST
+	int floor(Node* root, int key) 
+	{ 
+		if(!root) 
+			return INT_MAX; 
+
+		if(key == root->data)
+			return key;
+
+		if(key < root->data)
+			return floor(root->left,key);
+
+		int x = floor(root->right,key);
+
+		if(x <= key)
+			return x;
+		else
+			return root->data;       
+	}
+###### Ceil in BST
+	int findCeil(Node* root, int input) 
+	{ 
+		if (root == NULL) 
+			return -1; 
+		if(input == root->data)   
+			return input;
+		if(input > root->data)
+			return findCeil(root->right,input);
+		int x = findCeil(root->left,input);
+		if(x >= input)
+		   return x;
+		else
+			return root->data;
+	}
+###### Vertical Traversal of Binary Tree
+	map<int,vector<int>> mp;
+	void preorder(Node *root,int level){
+		if(root == NULL) return;
+		mp[level].push_back(root->data);
+		preorder(root->left,level-1);
+		preorder(root->right,level+1);
+	}
+
+	void verticalOrder(Node *root){
+		map<int,vector<int>>::iterator it;
+		mp.clear();
+		preorder(root,0);
+		for(it=mp.begin();it!= mp.end();it++){
+			vector<int> v = it->second;
+			for(int i=0;i<v.size();i++){
+				cout<<v[i]<<" ";
+			}
+		}
+	}
+###### Top View of Binary Tree
+	void topView(struct Node *root)
+	{       map<int,int>mp;
+			queue<pair<Node*,int>>q;
+			int hd=0;
+			if(root==NULL)
+				return;
+			q.push(make_pair(root,hd));
+			while(!q.empty())
+			{   pair<Node*,int> no=q.front();
+					q.pop();
+
+				int val=no.second;
+				struct Node* nod=no.first;
+				if(mp.find(val)==mp.end())
+					mp[val]=nod->data;
+				if(nod->left!=NULL)
+					q.push(make_pair(nod->left,val-1));
+				if(nod->right!=NULL)
+					q.push(make_pair(nod->right,val+1));
+			}
+			for(auto x:mp)
+				cout<<x.second<<" ";
+	}
+
+###### Bottom View of Binary Tree
+	map<int,int> mp;
+	void preorder(Node *root,int haxis){
+		if(root==NULL) return;
+		mp[haxis] = root->data;
+		preorder(root->left,haxis-1);
+		preorder(root->right,haxis+1);
+	}
+	void bottomView(Node *root){
+		 mp.clear();
+		 preorder(root,0);
+		 map<int,int>::iterator it;
+		 for(it= mp.begin();it!=mp.end();it++){
+			 cout<<it->second<<" ";
+		 }
+	}
+###### Find the Closest Element in BST
+	int minDiff(Node *root, int k)
+	{
+		int m=INT_MAX;
+		queue<Node*> q;
+		q.push(root);
+		while(q.size()){
+			if(abs(k-q.front()->data)<m){
+				m=abs(k-q.front()->data);
+			}
+			if(q.front()->right) q.push(q.front()->right);
+			if(q.front()->left) q.push(q.front()->left);
+			q.pop();
+		}
+		return m;
+	}
+###### Convert Level Order Traversal to BST
+	Node *BSTutil(Node *root, int data)
+	{
+		if(root==NULL)
+		{
+			root=new Node(data);
+			return root;
+		}
+		if(root->data>data)
+			root->left=BSTutil(root->left,data);
+		else
+			root->right = BSTutil(root->right,data);
+	return root;   
+	}
+	Node* constructBst(int arr[], int n)
+	{
+		int i;
+		if(n==0) return NULL;
+		Node *root=NULL;
+		for(int i=0;i<n;i++)
+			root= BSTutil(root,arr[i]);
+		return root;	
+	}
+###### Count BST nodes that lie in a given range
+	int getCountOfNode(Node *root, int l, int h)
+	{ 
+		int count=0;
+		if(root==NULL)
+		return count ;
+		if(root->data>=l && root->data<=h)
+		count++;
+		return count+ getCountOfNode(root->left, l, h)+getCountOfNode(root->right, l, h);
+	}
+###### Merge two BST 's
+	vector<int> v;
+	void inorder(Node* root)
+	{
+		if(root == NULL)
+			return;
+
+		inorder(root->left);
+		v.push_back(root->data);
+		inorder(root->right);
+	}
+
+	void merge(Node *root1, Node *root2)
+	{
+		v.clear();
+		inorder(root1);
+		vector<int> x = v; 
+		v.clear();
+		inorder(root2);
+		vector<int> y = v;
+
+		int f = 0;
+		int s = 0;
+		while(f<x.size() && s<y.size())
+		{
+			if(x[f] <= y[s])
+			{
+				cout<<x[f]<<" ";
+				f++;
+			}
+			else
+			{
+				cout<<y[s]<<" ";
+				s++;
+			}
+		}
+		while(f < x.size())
+		{
+			cout<<x[f]<<" ";
+			f++;
+		}
+		while(s < y.size())
+		{
+			cout<<y[s]<<" ";
+			s++;
+		}
+	}
+###### Smaller on Right
+int countSmallerRight(int a[], int n) {
+    int mx=0;
+    set<int>s;
+    for(int i=n-1;i>=0;i--){
+        s.insert(a[i]);
+        auto l=s.lower_bound(a[i]);
+        int p=distance(s.begin(),l);
+        mx=max(mx,p);
+        
+    }
+    return mx;
+}
+###### Preorder to Postorder
+	void findPostOrderUtil(int pre[],int n, int minval, int maxval, int &pre_index)
+	{
+		if(pre_index==n)
+		{
+			return;
+		}
+		if(pre[pre_index]<minval||pre[pre_index]>maxval)
+		{
+			return;
+		}
+		int val = pre[pre_index];
+		pre_index++;
+		findPostOrderUtil(pre,n,minval,val,pre_index);
+		findPostOrderUtil(pre,n,val,maxval,pre_index);
+		cout<<val<<" ";
+	}
+	void findPostOrder(int arr[],int n)
+	{
+		int pre_index = 0;
+		findPostOrderUtil(arr,n,INT_MIN,INT_MAX,pre_index);
+	}
+###### Fixing Two nodes of a BST
+	vector<node *> v;
+	void inorder(node *root)
+	{
+		if(root)
+		{
+			inorder(root->left);
+			v.push_back(root);
+			inorder(root->right);
+		}
+	}
+	struct node *correctBST( struct node* root )
+	{
+		v.clear();node *p,*q;int k;
+		inorder(root);
+		for(int i=0;i<v.size()-1;i++)
+		{
+			if(v[i]->data>v[i+1]->data)
+			{
+				p=v[i];k=i;
+				break;
+			}
+		}
+		for(int i=k+1;i<v.size()-1;i++)
+		{
+			if(v[i]->data>v[i+1]->data)
+			{
+				q=v[i+1];
+				break;
+			}
+		}
+		int temp=p->data;
+		p->data=q->data;
+		q->data=temp;
+		return root;
+	}
+## Heap
+
+######  K largest elements 
+	vector<int> kLargest(int arr[], int n, int k)
+	{
+		vector<int>res;
+		priority_queue<int>pq;
+		for(int i=0;i<n;i++)
+		{
+			pq.push(arr[i]);
+		}
+		for(int i=0;i<k;i++)
+		{
+		   res.push_back(pq.top());
+		   pq.pop();
+		}
+		return res;
+	}
+######  Kth largest element in a stream
+
+	void kthLargest(int arr[], int n, int k)
+	{
+		vector<int>res;
+		priority_queue<int,vector<int>,greater<int>>pq;
+		queue<int>q;
+		for(int i=0;i<n;i++)
+		{
+			if(pq.size() < k) 
+				pq.push(arr[i]);
+			else // if size becomes equal to k
+			{
+				if(arr[i] > pq.top()) // if top element is smaller than arr[i]
+				{
+					pq.pop();
+					pq.push(arr[i]);
+				}
+			}
+
+			if(pq.size()<k)
+				cout<<-1<<" ";
+			else
+				cout<<pq.top()<<" "; // print the current top element
+		}
+	}
+
+###### K Most occurring elements
+	int print_N_mostFrequentNumber(int arr[],int n, int k) 
+	{               
+			unordered_map<int,int>um;
+			for(int i=0;i<n;i++)
+				um[arr[i]]++;
+			int sum=0;
+			priority_queue<int>pq;
+			for(auto &y:um)
+			{   pq.push(y.second);
+			}
+			int i=0;
+			while(!pq.empty()&&i<k)
+			{   sum=sum+pq.top();
+					pq.pop();
+					i++;
+			}
+			return sum; 
+	} 
+###### Minimum Cost of ropes
+	long long minCost(long long arr[], long long n) {
+			priority_queue<long long,vector<long long>,greater<long long>>pq;
+			long long i,sum1=0;
+			for(i=0;i<n;i++)
+			{    pq.push(arr[i]);sum1=sum1+arr[i];}
+			long long cost=0,sum=0;
+			while(sum1!=pq.top())
+			{   sum=0;
+				sum=sum+pq.top();
+				pq.pop();
+				sum=sum+pq.top();
+				pq.pop();
+				cost=cost+sum;
+				pq.push(sum);
+			}
+			return cost;
+	}
+###### Nearly sorted
+	vector <int> nearlySorted(int arr[], int num, int K){
+			priority_queue<int,vector<int>,greater<int>>pq;
+			for(int i=0;i<num;i++)
+				pq.push(arr[i]);
+			vector<int>v;
+			while(!pq.empty())
+			{   v.push_back(pq.top());
+					pq.pop();
+			}
+			return v;
+	}
+###### Merge k Sorted Arrays
+	int *mergeKArrays(int arr[][N], int k)
+	{           
+			priority_queue<int,vector<int>,greater<int>>pq;
+			int *a=new int[k*k];
+			int l=0;
+			for(int i=0;i<k;i++)
+			{   for(int j=0;j<k;j++)
+				{   pq.push(arr[i][j]);
+				if(pq.size()>(k-1)*k)
+				{  a[l]=pq.top();
+					pq.pop();l++;
+				}}
+			}
+			while(pq.size()>0)
+			{   a[l]=pq.top();
+				pq.pop();
+				l++;
+			}
+			return a;
+	}
+###### Rearrange characters
+	string rearrangeString(string str){
+			priority_queue<pair<int,char>>p;
+		map<char,int>m;
+		for(int i=0;i<str.length();i++){
+			m[str[i]]++;
+		}
+		for(auto x:m){
+			p.push(make_pair(x.second,x.first));
+		}
+		string res;
+		pair<int,char>pre={-1,'#'};
+		while(!p.empty())
+		{
+			auto cu=p.top();
+			//you haven't popped anything from p, therefore add p.pop();
+			p.pop();
+			res.push_back(cu.second);
+			cu.first-=1;
+			if(pre.first>0)
+				p.push(pre);
+			pre=cu;
+		}
+		if(res.length()==str.length()){
+			return res;
+		}
+		return "aa";
+	}
+###### Find median in a stream
+	#include <bits/stdc++.h>
+	using namespace std;
+
+	class FindMedian
+	{
+		public:
+			void insertHeap(int &);
+			double getMedian();
+		private:
+			double median; //Stores current median
+			priority_queue<int> max; //Max heap for lower values
+			priority_queue<int, vector<int>, greater<int> > min; //Min heap for greater values
+			void balanceHeaps(); //Method used by insertHeap
+	};
+
+
+	 // } Driver Code Ends
+
+
+	// Function to insert heap
+
+	void FindMedian::insertHeap(int &x)
+	{
+		if(max.size()==0)
+		{
+			max.push(x);
+			getMedian();
+		}
+		else if(x>max.top())
+		{
+			min.push(x);
+			balanceHeaps();
+			getMedian();
+		}
+		else
+		{max.push(x);balanceHeaps();getMedian();}
+
+	}
+
+	// Function to balance heaps
+	void FindMedian::balanceHeaps()
+	{
+		if((max.size()-min.size())==2)
+		{
+			min.push(max.top());
+			max.pop();
+		}
+		else if((min.size()-max.size())==1)
+		{
+			max.push(min.top());
+			min.pop();
+		}
+
+	}
+
+	// Function to return getMedian
+	double FindMedian::getMedian()
+	{
+		if(max.size()-min.size()==1)
+		return(max.top());
+		else
+		return((max.top()+min.top())/2);
+	}
+
+	// { Driver Code Starts.
+
+	int main()
+	{
+		int n, x;
+		FindMedian Ans;
+		cin >> n;
+		for(int i = 1;i<= n; ++i)
+		{
+			cin >> x;
+			Ans.insertHeap(x);
+			cout << floor(Ans.getMedian()) << endl;
+		}
+		// }
+		return 0;
+	}  // } Driver Code Ends
+## Graph
+
+###### Find the number of islands
+	bool isValid{
+		if((i>=0)&&(i<n)&&(j>=0)&&(j<m)&&(A[i][j]==1)&&(visited[i][j]==false))
+		{
+			return true;
+		}
+		else
+		return false;
+	}
+	void dfs(int A[MAX][MAX],int i,int j,bool **visited,int n,int m)
+	{
+		/*if(!isvalid(A,i,j,visited,n,m))
+		{
+			return;
+		}*/
+		 static int r[] = {-1, -1, -1,  0, 0,  1, 1, 1};
+		 static int c[] = {-1,  0,  1, -1, 1, -1, 0, 1};
+		 visited[i][j]=true;
+		 for(int k=0;k<8;k++)
+		 {
+			 if(isvalid(A,i+r[k],j+c[k],visited,n,m))
+			 {
+				 dfs(A,i+r[k],j+c[k],visited,n,m);
+			 }
+		 }
+
+	}
+	int findIslands(int A[MAX][MAX], int N, int M)
+	{
+		int count=0;
+		bool **visited;
+		visited=new bool*[N];
+		for(int i=0;i<N;i++)
+		{
+			visited[i]=new bool[M];
+		}
+		for(int i=0;i<N;i++)
+		{
+			for(int j=0;j<M;j++)
+			{
+				visited[i][j]=false;
+			}
+		}
+		for(int i=0;i<N;i++)
+		{
+			for(int j=0;j<M;j++)
+			{
+				if(!visited[i][j]&&A[i][j])
+				{
+					count++;
+					dfs(A,i,j,visited,N,M);
+				}
+			}
+		}
+		return count;
+	}
+###### Find whether path exist
+	bool safe(int x,int y,int n){
+		return x>=0 && x<n && y>=0 && y<n;
+	}
+	void dfs(int x,int y,int n,int &ans){
+		int row[]={-1,0,0,1};
+		int col[]={0,-1,1,0};
+		vis[x][y]=1;
+		if(mat[x][y]==2){
+			ans=1;
+			return;
+		}
+		for(int k=0;k<4;k++){
+			if(safe(x+row[k],y+col[k],n) && vis[x+row[k]][y+col[k]]==0 && mat[x+row[k]][y+col[k]]!=0 && ans==0){
+				dfs(x+row[k],y+col[k],n,ans);
+			}
+		}
+	}
+###### Level of Nodes
+	int Graph::levels( int s, int l){
+		// Your code here
+		bool visited[V];
+		memset(visited,false,sizeof(visited));
+		queue<pair<int,int>>q;
+		q.push({s,0});
+		visited[s]=true;
+		int c = -1;
+		while(!q.empty())
+		{
+			pair<int,int> p;
+			p = q.front();
+			q.pop();
+			int f = p.first;
+			int s = p.second;
+			if(f==l)
+			{
+				c=s;
+			}
+			for(int i:adj[f])
+			{
+				if(!visited[i])
+				{
+					visited[i]=true;
+					q.push({i,s+1});
+				}
+			}
+		}
+		return c;
+	}
+###### Possible paths between 2 vertices
+	void DFSRec(list<int> adj[], int s, int d, bool visited[], int &count)
+	{
+		visited[s] = true;
+		if(s == d)
+		{
+			count++;
+		}
+		else
+		{
+			for(int u: adj[s])
+			{
+				if(visited[u] == false)
+				{
+					DFSRec(adj, u, d, visited, count);
+
+					visited[u] = false;
+				}
+			}
+		}
+	}
+
+	int countPaths(list<int> adj[], int V, int s, int d)
+	{
+		bool visited[V+1] = {0};
+		int count = 0;
+		DFSRec(adj, s, d, visited, count);
+		return count;
+	}
+###### X Total Shapes
+	for(int j=0;j<m;j++)
+	 {
+		 if(a[i][j]=='X'&&v[i][j]==false)
+		 {
+			 count++;
+			 dfs(i,j,a,v,n,m);
+		 }
+	 }
+	 cout<<count<<"\n";
+	 
+	 bool isvalid(int i,int j,char **a,bool **v,int n,int m)
+	{
+		if(i<n&&i>=0&&j<m&&j>=0&&a[i][j]=='X'&&v[i][j]==false)
+		return true;
+		return false;
+	}
+	void dfs(int i,int j,char **a,bool **v,int n,int m)
+	{
+		if(v[i][j]==true)
+		return;
+		v[i][j]=true;
+		static int r[]={0,1,0,-1};
+		static int c[]={-1,0,1,0};
+		for(int k=0;k<4;k++)
+		{
+			if(isvalid(i+r[k],j+c[k],a,v,n,m))
+			{
+				dfs(i+r[k],j+c[k],a,v,n,m);
+			}
+		}
+	}
+###### Distance of nearest cell having 1
+	vector <vector <int> > nearest(vector<vector<int>> &mat, int N, int M) {
+		  queue<pair<int,int>>q;
+		  vector<vector<int>>dist(N,vector<int>(M,INT_MAX));
+		  for(int i=0;i<mat.size();i++)
+		  {
+			  for(int j=0;j<mat[0].size();j++)
+			  {
+				  if(mat[i][j]==1)
+				  {
+				   q.push({i,j});
+				   dist[i][j]=0;
+				  }
+			  }
+		  }
+		  int x_dir[]={-1,0,1,0};
+		  int y_dir[]={0,-1,0,1};
+		  while(!q.empty())
+		  {
+			  pair<int,int>temp=q.front();
+			  int i=temp.first;
+			  int j=temp.second;
+			  q.pop();
+			  for(int k=0;k<4;k++)
+			  {
+				  int x_new=i+x_dir[k];
+				  int y_new=j+y_dir[k];
+				  if(x_new>=0 && x_new<N && y_new>=0 && y_new<M && dist[x_new][y_new]>dist[i][j]+1)
+				  {
+					  dist[x_new][y_new]=dist[i][j]+1;
+					  q.push({x_new,y_new});
+				  }
+			  }
+		  }
+		  return dist;   
+	}
+######  Mother Vertex 
+	void dfs(int i,vector<int> g[],vector<int> &vis)
+	 {
+		if(vis[i]){return;}
+		vis[i]=1;
+		for(auto u:g[i])
+		{
+			if(!vis[u])
+			{
+				dfs(u,g,vis);
+			}
+		}
+	 }
+	int findMother(int v, vector<int> g[]) 
+	{ 
+	   int last_vis_node;
+	   vector<int> vis(v,0);
+		for(int i=0;i<v;i++)//dfs of all nodes;
+		{   
+			if(!vis[i])
+			{
+				dfs(i,g,vis);
+				last_vis_node= i; 
+			}
+		}
+		vis.clear();
+		vis.resize(v);
+		dfs(last_vis_node,g,vis);
+		for(int i=0;i<v;i++)
+		{
+			if(!vis[i])
+				return -1;
+		}
+		return (last_vis_node);
+	} 
+###### Unit Area of largest region of 1's
+	void dfs(int a[][SIZE],int i,int j,int &curr,int n,int m)
+	{
+		if(i<0||j<0||i>=n||j>=m||a[i][j]!=1)
+		return;
+		curr++;
+		a[i][j]=-1;
+		dfs(a,i+1,j,curr,n,m);
+		dfs(a,i-1,j,curr,n,m);
+		dfs(a,i,j+1,curr,n,m);
+		dfs(a,i,j-1,curr,n,m);
+		dfs(a,i+1,j+1,curr,n,m);
+		dfs(a,i+1,j-1,curr,n,m);
+		dfs(a,i-1,j+1,curr,n,m);
+		dfs(a,i-1,j-1,curr,n,m);
+
+	}
+	int findMaxArea(int n, int m, int a[SIZE][SIZE] )
+	{
+	 int ans=0,curr,i,j;
+	 for(i=0;i<n;i++)
+	 for(j=0;j<m;j++)
+	 if(a[i][j]==1)
+	 {
+		 curr=0;
+		 dfs(a,i,j,curr,n,m);
+		 ans=max(ans,curr);
+	 }
+	 return ans;
+	}
+###### Rotten Oranges
+	void rot(vector<vector<int>>&m, int r, int c, int x, int y, queue<pair<int, int>>&q, vector<vector<int>>&visited) {
+		if(x+1<r && (m[x+1][y] == 1) && !visited[x+1][y]) {
+			m[x+1][y] = 2;
+			q.push({x+1, y});
+		}
+		if(x-1>=0 && m[x-1][y] == 1 && !visited[x-1][y]) {
+			m[x-1][y] = 2;
+			q.push({x-1, y});
+		}
+		if(y-1>=0 && m[x][y-1] == 1 && !visited[x][y-1]) {
+			m[x][y-1] = 2;
+			q.push({x, y-1});
+		}
+		if(y+1<c && m[x][y+1] == 1 && !visited[x][y+1]) {
+			m[x][y+1] = 2;
+			q.push({x, y+1});
+		}
+	}
+
+	int rotOranges(vector<vector<int> > &m, int r, int c) {
+		queue<pair<int, int>> q;
+		vector<vector<int>> visited(r, vector<int>(c, 0));
+		for(int i=0; i<r; i++) {
+			for(int j=0; j<c; j++) {
+				if(m[i][j] == 2)
+					q.push({i, j});
+			}
+		}
+		q.push({-1, -1});
+		int ans = 0;
+		while(!q.empty()) {
+			pair<int, int> p = q.front();
+			q.pop();
+			int x = p.first, y = p.second;
+			if(x < 0) {
+				ans = max(ans, abs(x));
+				if(!q.empty())
+					q.push({x-1, y-1});
+				continue;
+			}
+			visited[x][y] = 1;
+			rot(m, r, c, x, y, q, visited);
+		}
+		for(int i=0; i<r; i++) {
+			for(int j=0; j<c; j++) {
+				// cout << m[i][j] << " ";
+				if(m[i][j] == 1)
+					return -1;
+			}
+			// cout << "\n";
+		}
+		return ans-1;
+	}
+###### Minimum Swaps to Sort
+	int minSwaps(int a[], int n){
+		int c=0,i,t;
+		int temp[n];
+		for(i=0;i<n;i++)
+			temp[i]=a[i];
+		sort(temp,temp+n);
+		for(i=0;i<n;i++){
+			a[i]=lower_bound(temp,temp+n,a[i])-temp;
+		}
+		for(i=0;i<n-1;i++){
+
+			while(i!=a[i]){
+				t=a[a[i]];
+				a[a[i]]=a[i];
+				a[i]=t;
+				c+=1;
+
+			}
+		}
+		return c;
+	}
+###### Steps by Knight
+	knight(n,xi-1,yi-1);
+	cout<<mat[xf-1][yf-1]<<endl;
+
+	bool safe(int n,int x,int y){
+		return x>=0 && y>=0 && x<n && y<n;
+	}
+	void knight(int n,int xi,int yi){
+		int row[]={-2,-2,-1,-1,2,2,1,1};
+		int col[]={-1,1,-2,2,-1,1,-2,2};
+		int k;
+		queue<pair<int,int>>Q;
+		Q.push(make_pair(xi,yi));
+		while(!Q.empty()){
+			auto x=Q.front();
+			Q.pop();
+			visited[x.first][x.second]=1;
+			for(k=0;k<8;k++){
+				if(safe(n,x.first+row[k],x.second+col[k]) && visited[x.first+row[k]][x.second+col[k]]==0){
+					mat[x.first+row[k]][x.second+col[k]]=mat[x.first][x.second]+1;
+					Q.push(make_pair(x.first+row[k],x.second+col[k]));
+				}
+			}
+		}
+	}
+###### Minimum Cost Path
+	bfs();
+	cout<<level[n-1][n-1]<<"\n";
+
+	int is_valid(int x, int y)
+	{
+		if(x>=0 && y>=0 && x<n && y<n ) return 1;
+		else return 0;   
+	}
+	void bfs()
+	{
+		for(int i=0;i<n;i++)
+		{
+			for(int j=0;j<n;j++)
+			{
+				vis[i][j]=0;
+				level[i][j]=INT_MAX;
+			}
+		}
+		queue<pair<int,int> > q;
+		q.push({0,0});
+		vis[0][0]=1;
+		level[0][0]=arr[0][0];
+		while(!q.empty())
+		{
+			pair<int,int> v;
+			v=q.front();
+			q.pop();
+			for(int i=0;i<4;i++)
+			{
+				int nx = v.first + dx[i];
+				int ny = v.second +dy[i];
+				if(is_valid(nx,ny) && level[nx][ny]>level[v.first][v.second]+arr[nx][ny])
+				{
+					level[nx][ny]=level[v.first][v.second]+arr[nx][ny];
+					vis[nx][ny]=1;
+					q.push({nx,ny});
+				}
+			}
+		}
+	}
+###### Implementing Dijkstra | Set 1 (Adjacency Matrix)
+
+	void dijkstra(vector<vector<int>> graph, int src, int V)
+	{
+		// Your code here
+		priority_queue < pair<int,int> , vector<pair<int,int>> , greater<pair<int,int>> > pq;
+		vector<int>distance(V,INT_MAX);
+		bool visited[V]={false};
+		pq.push({0,src});
+		distance[src]=0;
+
+		while(!pq.empty()){
+			pair<int,int> p=pq.top();
+			pq.pop();
+			int u=p.second;
+			if(visited[u]==true) continue;
+			visited[u]=true;
+			for(int i=0;i<V;i++){
+				if(graph[u][i]!=0){
+					int v=i;    
+					int wt=graph[u][i];
+					if(distance[v]>distance[u]+wt){
+						distance[v]=distance[u]+wt;
+						pq.push({distance[v],v});
+					}
+				}
+			} 
+		}
+		for(int i=0;i<V;i++) cout<<distance[i]<<" ";
+	}
+###### Minimum Spanning Tree
+
+	int spanningTree(int  V,int E,vector<vector<int> > graph)
+	{
+		int vis[V],i,summ;
+		memset(vis,0,sizeof(vis));
+		priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+		pq.push(make_pair(0,0));
+		summ=0;
+		while(!pq.empty()){
+			auto x=pq.top();
+			pq.pop();
+			if(vis[x.second])
+				continue;
+			summ+=x.first;
+			vis[x.second]=1;
+			for(i=0;i<V;i++){
+				if(graph[x.second][i]!=INT_MAX && vis[i]==0){
+					pq.push(make_pair(graph[x.second][i],i));
+				}
+			}
+		}
+		return summ;
+	}
+###### Strongly Connected Components (Kosaraju's Algo)
+	void tdfs(vector<int> adj[], bool vis[], int u,stack<int> &s){
+		vis[u] = 1;
+		for(auto itr = adj[u].begin();itr!=adj[u].end();itr++){
+			if(!vis[*itr])
+				tdfs(adj,vis,*itr,s);
+		}
+		s.push(u);
+	}
+	void dfs(vector<int> adjt[], bool vis[], int start){
+		vis[start] = 1;
+		for(auto itr = adjt[start].begin();itr!=adjt[start].end();itr++){
+			if(!vis[*itr])
+				dfs(adjt,vis,*itr);
+		}
+	}
+	int kosaraju(int V, vector<int> adj[])
+	{
+		int res = 0;
+		bool vis[V] = {};
+		stack<int> s;
+
+		for(int i=0;i<V;i++){
+			if(!vis[i]){
+				tdfs(adj,vis,i,s);
+			}
+		}
+		vector<int> adjt[V];
+		for(int i=0;i<V;i++)
+			vis[i] = 0;
+		for(int u=0;u<V;u++){
+			for(auto itr = adj[u].begin();itr!=adj[u].end();itr++){
+				adjt[*itr].push_back(u);
+			}
+		}
+		while(!s.empty()){
+			int t = s.top();
+			s.pop();
+			if(!vis[t]){
+				dfs(adjt,vis,t);
+				res++;
+			}
+		}
+		return res;
+	}
+###### Bridge Edge in Graph
+	bool util(int u,list<int> adj[], int V, int s, int e,vector<int>&disc,vector<int>&low,vector<int>&par)
+	{
+	 static int tc=0;
+	 disc[u]=low[u]=++tc;
+	 for(auto it=adj[u].begin();it!=adj[u].end();it++)
+	 {
+		 int v=*it;
+		 if(disc[v]==-1)
+		 {
+			 par[v]=u;
+			 if(util(v,adj,V,s,e,disc,low,par))
+			 return true;
+			 low[u]=min(low[u],low[v]);
+			 if(low[v]>low[u])
+			 {
+				 if(u==s&&v==e||v==s&&u==e) 
+					 return true;
+			 }
+		 }
+		 else if(par[u]!=v)
+		 {
+			 low[u]=min(low[u],disc[v]);
+		 }
+	 }
+	 return false;
+	}
+	bool isBridge(list<int> adj[], int V, int s, int e) {
+		vector<int> disc(V,-1);
+		vector<int> low(V,-1);
+		vector<int> par(V,-1);
+		for(int i=0;i<V;i++)
+		if(disc[i]==-1)
+			if(util(i,adj,V,s,e,disc,low,par)) 
+				return true;
+		return false;
+	}
+###### Strongly connected component (Tarjans's Algo)
+	stack<pair<int,int>> st;
+	void dfs(int s, vector<int> adj[]){
+		low[s] = id[s] = ++t;
+		vis[s] = true;
+		inStack[id[s]] = true;
+		st.push(make_pair(id[s], s));
+
+		for(int u : adj[s]){
+			if(vis[u] == false){
+				dfs(u, adj);
+			}
+			if(inStack[id[s]] && inStack[id[u]])
+					low[s] = min(low[s], low[u]);
+		}
+
+		if(low[s] == id[s]){
+			while(st.top().first != id[s]){
+				cout<<st.top().second<<" ";
+				inStack[st.top().first] = false;
+				st.pop();
+			}
+			inStack[st.top().first] = false;
+			cout<<st.top().second<<",";
+			st.pop();
+		}
+	}
+	void find(vector<int> adj[], int N) 
+	{
+
+		 t = -1;
+		memset(vis, false, sizeof(vis));
+		memset(inStack, false, sizeof(inStack));
+		while(!st.empty())
+			st.pop();
+		for(int i=0;i<1000001; i++)
+			low[i] = i;
+
+		for(int i=0; i<N; i++)
+			if(vis[i] == false)
+				dfs(i, adj);
+	}
+## Greeddy
+
+######  Activity Selection 
+	bool myCmp(pair<int, int> a, pair<int, int> b)
+		return a.second < b.second;
+	int activitySelection(int start[], int end[], int n) {
+		vector<pair<int, int>> jobTime;
+		for(int i = 0; i < n; i++) {
+			jobTime.push_back({start[i], end[i]});
+		}
+		sort(jobTime.begin(), jobTime.end(), myCmp);
+		int count = 1;
+		pair<int, int> last = jobTime[0];
+		for(int i = 1; i < n; i++)
+		{
+			if(jobTime[i].first >= last.second)
+			{
+				count++;
+				last = jobTime[i];
+			}
+		}
+		return count;
+	}
+
+###### Huffman Decoding
+	struct MinHeapNode
+	{
+		char data;
+		int freq;
+		MinHeapNode *left, *right;
+	};
+
+	typedef struct MinHeapNode Node;
+	string decodeHuffmanData(struct MinHeapNode* root, string s)
+	{
+		string o;
+		for(int i=0;i<s.length();)
+		{
+			Node *t=root;
+			while(t->left&&t->right)
+			{
+				if(s[i]=='0')
+				t=t->left;
+				else
+				t=t->right;
+				i++;
+			}
+			o+=t->data;
+		}
+		return o;
+	}
+###### Fractional Knapsack
+	bool cmp(struct Item a, struct Item b) 
+	{ 
+		double r1 = (double)a.value / a.weight; 
+		double r2 = (double)b.value / b.weight; 
+		return r1 > r2; 
+	} 
+
+	double fractionalKnapsack(int W, Item arr[], int n)
+	{           
+		sort(arr,arr+n,cmp);int cw=0;
+		double profit=0.0;
+		for(int i=0;i<n;i++)
+		{   //if(W==0)break;
+			if((cw+arr[i].weight)<=W)
+			{   profit=profit+arr[i].value;
+				cw=cw+arr[i].weight;
+			}
+
+			else
+			{   int remain=W-cw;
+				profit=profit+((double)remain/arr[i].weight)*arr[i].value;
+				break;
+			}
+		}
+		return profit;
+	}
+###### Largest number with given sum
+	string largestNumber(int n, int sum){
+		string larnum="";
+		if(sum>(n*9))
+		{    larnum=to_string(-1);return larnum;}
+		for(int i=0;i<n;i++)
+		{   if(sum==0)
+			{   larnum=larnum+'0';}
+			else if(sum>=9)
+			{    larnum=larnum+'9';sum=sum-9;}
+			else if(sum<9)
+			{   larnum=larnum+to_string(sum);sum=0;}
+		}
+		return larnum;
+	}
+###### Job Sequencing Problem
+	bool cmp(struct Job a,struct Job b)
+	{   return a.profit>b.profit;
+	}
+	pair<int,int> JobScheduling(Job arr[], int n) 
+	{       sort(arr,arr+n,cmp);
+			pair<int,int>p;
+			int slot[n];
+			bool ji[n];
+			for(int i=0;i<n;i++)
+			{   ji[i]=false;}
+
+			for(int i=0;i<n;i++)
+			{   for(int j=min(n,arr[i].dead)-1;j>=0;j--)
+				{   if(ji[j]==false)
+					{   ji[j]=true;
+						slot[j]=i;
+						break;
+					}
+				}
+			}
+			int profit=0;
+			int jo=0;
+			for(int i=0;i<n;i++)
+			{   if(ji[i])
+				{   profit=profit+arr[slot[i]].profit;
+					jo++;
+				}
+			}
+			p.first=jo;
+			p.second=profit;
+			return p;
+	} 
+
+## Backtracking
+
+######  Rat in a Maze Problem - I 
+	vector<string> v;
+	bool visited[100][100];
+	string s;
+	bool isvalid(int i,int j,int n)
+	{
+		if(i>=0&&i<n&&j>=0&&j<n)
+		return true;
+		return false;
+	}
+	void path(int m[MAX][MAX],int i,int j,int n)
+	{
+		visited[i][j]=true;
+		if(i==n-1&&j==n-1)
+		v.push_back(s);
+		if(m[i+1][j]&&isvalid(i+1,j,n)&&!visited[i+1][j])
+		{
+			s=s+"D";
+			path(m,i+1,j,n);
+			s.pop_back();
+			visited[i+1][j]=false;
+		}
+		if(m[i][j+1]&&isvalid(i,j+1,n)&&!visited[i][j+1])
+		{
+			s=s+"R";
+			path(m,i,j+1,n);
+			s.pop_back();
+			visited[i][j+1]=false;
+		}
+		if(m[i-1][j]&&isvalid(i-1,j,n)&&!visited[i-1][j])
+		{
+			s=s+"U";
+			path(m,i-1,j,n);
+			s.pop_back();
+			visited[i-1][j]=false;
+		}
+		if(m[i][j-1]&&isvalid(i,j-1,n)&&!visited[i][j-1])
+		{
+			s=s+"L";
+			path(m,i,j-1,n);
+			s.pop_back();
+			visited[i][j-1]=false;
+		}
+	}
+	vector<string> printPath(int m[MAX][MAX], int n)
+	{
+		v.clear();
+		s.clear();
+		for(int i=0;i<n;i++)
+		for(int j=0;j<n;j++)
+		visited[i][j]=false;
+		path(m,0,0,n);
+		sort(v.begin(),v.end());
+		return v;	
+	}
+###### Rat Maze With Multiple Jumps
+	bool isSafe(vector<int> maze[], int i, int j, int N)
+	{
+		return i < N && j < N && maze[i][j] != 0;
+	}
+	bool solRec(int i, int j, vector<int> maze[], vector<int> sol[], int N)
+	{
+		if(i == N-1 && j == N-1)
+		{
+			sol[i][j] = 1;
+			return true;
+		}
+		if(isSafe(maze, i, j, N) == true)
+		{
+			int jumps = maze[i][j];
+			sol[i][j] = 1;   
+			for(int k = 1; k <= jumps; k++)
+			{
+				if(solRec(i, j+k, maze, sol, N) == true)
+				{
+					return true;
+				}
+				if(solRec(i+k, j, maze, sol, N) == true)
+				{
+					return true;
+				}
+			}       
+			sol[i][j] = 0;
+		}    
+		return false;
+	}
+
+	void solve(int N, vector<int> maze[]) 
+	{
+		vector<int> sol[N];
+		for(int i = 0; i < N; i++)
+			sol[i].assign(N, 0);
+		if(solRec(0, 0, maze, sol, N) == false)
+			cout << "-1\n";
+		else
+			print(N, sol);
+	}
+###### Black and White
+	long long solve(int n, int m) {
+		int x_off[] = {-2, -2, -1, 1, 2, 2, 1, -1};
+		int y_off[] = {-1, 1, 2, 2, 1, -1, -2, -2};
+		  long long MOD = 1e9 + 7;
+		long long ret = 0;
+		int x, y;
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j < m; ++j) {
+				for (int k = 0; k < 8; ++k) {
+					x = i + x_off[k];
+					y = j + y_off[k];
+					// checking if the attack position is within bounds
+					if (x >= 0 && x < n && y >= 0 && y < m)
+						++ret; // if in bounds it is not feasible, increment it
+				}
+			}
+		}
+		long long total = n * m;
+		total =
+			(total * (total - 1)) ; // total possible combinations of 2 knights
+		return (total - ret) % MOD; // returning total feasible combinations
+	}
+###### 
+###### 
+###### 
+###### 
+###### 
