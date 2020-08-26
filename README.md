@@ -2560,26 +2560,360 @@ void print(int mat[][100],int n)
         lst.push_front({key, value});
         mp[key] = lst.begin();
     }
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
-######
+## Stack
+
+###### Removing consecutive duplicates
+	string removeConsecutiveDuplicates(string s)
+	{
+		stack<int> myStack;
+		string res="";
+		for( int i=0;i <s.length();i++){
+			if ( myStack.empty() || myStack.top() != s[i]){
+				myStack.push(s[i]);
+				res+=s[i];
+			}         
+		}
+		return res;
+	}
+###### Removing consecutive duplicates - 2
+	string removePair(string str){
+	   stack<char> myStack;
+	   for( int i=0; i<str.length();i++){
+		   if ( myStack.empty() || myStack.top() != str[i])
+			   myStack.push(str[i]);
+			else{
+				myStack.pop();
+			}
+		}
+	   string res="";
+	   while( myStack.empty() == false){
+		   res=myStack.top()+ res;
+		   myStack.pop();
+	   }
+	   return res;
+	}
+###### Implement two stacks in an array
+	void twoStacks :: push1(int x)
+	   {
+		   if(abs(top1-top2)>=1){
+			  top1++;
+			  arr[top1] = x;
+		   }
+	   }
+	void twoStacks ::push2(int x)
+	   {
+		   if(abs(top1-top2)>=1){
+			   top2--;
+			   arr[top2] = x;
+		   }
+	   }
+	int twoStacks ::pop1()
+	   {
+		   int x = -1;
+		   if(top1 >=0){
+			  x = arr[top1];
+			 top1--;
+		   }
+		   return x;
+	   }
+	int twoStacks :: pop2()
+	   {
+		   int x = -1;
+		   if(top2 <size){
+			  x = arr[top2];
+			 top2++;
+		   }
+		   return x;
+	   }
+###### Get min at pop
+	stack<int>_push(int arr[],int n)
+	{
+	   stack<int> s;
+	   int m=INT_MAX;
+	   for(int i=0;i<n;i++){
+		   s.push(arr[i]);
+		   m=min(arr[i],m);
+		   s.push(m);
+	   }
+	   return s;
+	   // your code here
+	}
+	void _getMinAtPop(stack<int>s)
+	{
+		while(!s.empty()){
+			cout<<s.top()<<" ";
+			s.pop();
+			s.pop();
+		}
+		// your code here
+	}
+###### Delete middle element of a stack
+	stack<int> deleteMid(stack<int>s,int sizeOfStack,int current)
+	{
+		stack<int>q;int i;
+		int a=s.size()/2;
+		for(i=0;i<a;i++)
+		{q.push(s.top());//cout<<" a"<<q.top();
+		s.pop();}s.pop();
+		while(!q.empty()){s.push(q.top());
+		q.pop();}
+		return s;
+	}
+###### Stock span problem
+	vector <int> calculateSpan(int price[], int n)
+	{
+	   vector<int> dp(n+1);
+	   stack<int> s;
+	   for(int i=0;i<n;i++)
+	   dp[i]=1;
+	   for(int i=0;i<n;i++)
+	   {
+		   if(s.empty())
+		   s.push(i);
+		   else
+		   {
+			   if(price[i]<price[s.top()])
+			   s.push(i);
+			   else
+			   {
+				   while(!s.empty()&&price[s.top()]<=price[i])
+				   {
+					   dp[i]+=dp[s.top()];
+					   s.pop();
+				   }
+				   s.push(i);
+			   }
+		   }
+	   }
+	   return dp;
+	}
+###### Next larger element
+	vector <long long> nextLargerElement(long long arr[], int n){
+		vector<long long> res(n,-1);
+		stack<int> s;
+		for(int i=0;i<n;i++)
+		{
+			if(s.empty())
+			{
+				s.push(i);
+			}   
+			else
+			{   
+				while(!s.empty()&&arr[s.top()]<arr[i])
+				{
+					res[s.top()]=arr[i];
+					s.pop();
+				}      
+				s.push(i);
+			}
+		}
+		return res;
+	}
+###### Maximum Rectangular Area in a Histogram
+	long getMaxArea(long long arr[], int n){
+		stack<int> st; long area=0,max=0; int i=0;
+		while(i<n){ if(st.empty()||arr[i]>=arr[st.top()]){
+		st.push(i);
+		i++;
+		}
+		else{
+		int curr = st.top();st.pop();
+		area = arr[curr]*(st.empty()?i:(i-1-st.top()));
+		if(area>max)
+		max=area;
+		}
+		}
+		while(!st.empty()){
+		int curr = st.top();st.pop();
+		area = arr[curr]*(st.empty()?i:(i-1-st.top()));
+		if(area>max)
+		max=area;
+		}
+		return max;
+	}
+######  The Celebrity Problem
+	int getId(int M[MAX][MAX], int n)
+	{
+		vector<int> v;
+		int i,j,cnt;
+		for(j=0;j<n;j++)
+		{
+			cnt=0;
+			for(i=0;i<n;i++)
+			{
+				if(M[i][j]==1)
+				cnt++;
+			}
+			if(cnt>=n-1)
+			v.push_back(j);
+		}
+		return (v.size()==1) ? v[0] : -1;
+	}
+###### Maximum of minimum for every window size
+	void printMaxOfMin(int arr[], int n) 
+	{ 
+		stack<int> s;   
+		int left[n+1]; 
+		int right[n+1];  
+		for (int i=0; i<n; i++) 
+		{ 
+			left[i] = -1; 
+			right[i] = n; 
+		} 
+		for (int i=0; i<n; i++) 
+		{ 
+			while (!s.empty() && arr[s.top()] >= arr[i]) 
+				s.pop(); 
+
+			if (!s.empty()) 
+				left[i] = s.top(); 
+
+			s.push(i); 
+		} 
+		while (!s.empty()) 
+			s.pop();  
+		for (int i = n-1 ; i>=0 ; i-- ) 
+		{ 
+			while (!s.empty() && arr[s.top()] >= arr[i]) 
+				s.pop(); 
+
+			if(!s.empty()) 
+				right[i] = s.top(); 
+
+			s.push(i); 
+		} 
+		int ans[n+1]; 
+		for (int i=0; i<=n; i++) 
+			ans[i] = 0; 
+		for (int i=0; i<n; i++) 
+		{ 
+			int len = right[i] - left[i] - 1; 
+			ans[len] = max(ans[len], arr[i]); 
+		} 
+		for (int i=n-1; i>=1; i--) 
+			ans[i] = max(ans[i], ans[i+1]); 
+		for (int i=1; i<=n; i++) 
+			cout << ans[i] << " ";
+		cout << endl;
+	} 
+## Queue
+
+######  Stack using two queues
+	void QueueStack :: push(int x)
+	{
+			q1.push(x);
+	}
+	int QueueStack :: pop()
+	{
+			int ans= -1;
+			if(q1.empty()) return ans;
+			q1.push(0);
+			while(1)
+			{
+				int x= q1.front();
+				q1.pop();
+				if(q1.front()==0)
+				{
+					ans=x;
+					break;
+				}
+				else 
+				{q1.push(x);}
+			}
+			q1.pop();
+			return ans;
+	}
+###### Maximum of all subarrays of size k
+	void max_of_subarrays(int *arr, int n, int k){
+		deque<int>Qi;
+		for(int i=0;i<k;i++){
+			 while ((!Qi.empty()) && arr[i] >= arr[Qi.back()]) 
+				Qi.pop_back(); 
+			Qi.push_back(i);
+		}
+		  for (int i=k; i < n; ++i) {  
+			cout<<arr[Qi.front()]<<" "; 
+			while ((!Qi.empty()) && Qi.front() <= i - k) 
+				Qi.pop_front(); 
+			while ((!Qi.empty()) && arr[i] >= arr[Qi.back()]) 
+				Qi.pop_back(); 
+			Qi.push_back(i);
+		} 
+		cout<< arr[Qi.front()]<<" ";
+	}
+###### Generate Binary Numbers
+	vector<string> generate(ll n)
+	{
+		string s="1";
+		queue<string> q;
+		q.push(s);
+		vector<string> res;
+		while(n--)
+		{
+			string cur=q.front();
+			q.pop();
+			res.push_back(cur);
+
+			q.push(cur+"0");
+			q.push(cur+"1");
+		}
+		return res;
+	}
+###### Reverse First K elements of Queue
+	{
+		stack<ll> s;
+		queue<ll> q1;
+		while(k-->0)
+		{
+			s.push(q.front());
+			q.pop();
+		}
+		while(!s.empty())
+		{
+			q1.push(s.top());
+			s.pop();
+		}
+		while(!q.empty())
+		{
+			q1.push(q.front());
+			q.pop();
+		}
+		return q1;
+	}
+## Tree
+
+###### Determine if Two Trees are Identical
+	bool isIdentical(Node *r1, Node *r2)
+	{
+		if(r1==NULL&&r2==NULL)
+		{return true;}
+		else if(r1==NULL||r2==NULL)
+		{return false;}
+		else
+		{
+			if(r1->data!=r2->data)
+			{return false;}
+			else
+			{
+				return isIdentical(r1->left,r2->left)&&isIdentical(r1->right,r2->right);
+			}
+		}
+	}
+
+###### Children Sum Parent
+	int isSumProperty(Node *root)
+	{
+		 if(root==NULL || (root->left==NULL && root->right==NULL))
+			return 1;
+		 int l=0,r=0;
+		 if(root->left)
+		 l=root->left->data;
+		 if(root->right)
+		 r=root->right->data;
+		 return ((root->data==l+r) && isSumProperty(root->left) && isSumProperty(root->right));
+	}
+###### Level order traversal Line by Line
+
 ######
 ######
 ######
