@@ -5207,14 +5207,783 @@ long long findNthFibonacci(int number)
 	} 
 
 ###### Kadane's Algorithm - I
+	long long maximumSum(int arr[], int n)
+	{
+	    int curr_sum=arr[0],res=arr[0]; 
+	    cout<<curr_sum<<" ";
+	   for(int i=1;i<n;i++) 
+	   {  
+	      curr_sum=max(curr_sum+arr[i],arr[i]);
+	      cout<<curr_sum<<" ";  
+	      res=max(res,curr_sum);
+	   } 
+	   cout<<endl;
+	   return res;
+	}
+###### Kadane's Algorithm - II
+	int check_neg(int a[],int n)
+	{
+		int maxm=INT_MIN;
+		for(int i=0;i<n;i++)
+		if(maxm<a[i])
+		maxm=a[i];
+		return maxm;
+	}
 
+	long long maximumSum(int arr[], int n)
+	{
+	  int c=check_neg(arr,n);
+	  if(c<=0)
+	  return c;
+	  long long dp[n]={0};
+	  dp[0]=max(dp[0],arr[0]);
+	  dp[1]=max(dp[0],arr[1]);
+	  for(int i=2;i<n;i++)
+		  dp[i]=max(dp[i-2]+arr[i],dp[i-1]);
+	  return dp[n-1];
+	}
+###### Unique BST's
+	int numTrees(int n) {
+		if(n==0||n==1)
+			return 1;    
+		int dp[n];
+		dp[0]=dp[1]=1;
+		for(int i=2;i<=n;i++)
+		{
+			dp[i]=0;
+			for(int k=0;k<i;k++)
+				dp[i]+=dp[k]*dp[i-k-1];
+		}    
+		return dp[n];
+	}
+###### Sum of all substrings of a number
+	long long sumSubstrings(string s)
+	{   
+		long long n=s.size();
+		long long prev_res[n];
+		prev_res[0]=s[0]-'0'; 
+		long long res =prev_res[0];
+		for(int i = 1; i < s.size(); i++)
+		{
+			prev_res[i]= (((i+1)*(s[i] - '0') + 10 * prev_res[i-1]))%1000000007;
+			res = (res + prev_res[i])%1000000007;
+		}    
+		return res;
+	}
+###### Max sum subarray by removing at most one element
+	int maxSumSubarray(int a[], int n)
+	{
+		int sum=0,ans=INT_MIN;
+		for(int i=0;i<n;i++)ans=max(ans,a[i]);
+		for(int i=0;i<n;i++){
+			sum+=a[i];
+			ans=max(ans,sum);
+			if(sum<0)sum=0;
+		}
+		for(int i=0;i<n;i++){
+			if(a[i]<0){
+				int sum=0;
+				for(int j=0;j<n;j++){
+					if(j==i)continue;
+					sum+=a[j];
+					ans=max(ans,sum);
+					if(sum<0)sum=0;
+				}
+			}
+		}
+		return ans;
+	}
+###### Longest Increasing Subsequence
+	int longestSubsequence(int n, int a[])
+	{           
+		int output[n],pa=0;
+		for(int i=0;i<n;i++)
+			output[i]=1;
+		for(int i=0;i<n;i++)
+		{   for(int j=i-1;j>=0;j--)
+			{   if(a[j]>=a[i])
+					continue;
+				else
+				{   pa=output[j]+1;
+					if(output[i]<pa)
+						output[i]=pa;
+				}
+			}
+		}
+		int max=0;
+		for(int i=0;i<n;i++)
+		{   if(output[i]>max)
+				max=output[i];
+		}
+		return max;
+	}
+###### Longest Common Subsequence
+	int lcs(int x, int y, string s1, string s2){
+			int t[x+1][y+1];
+			for(int i=0;i<x+1;i++)
+			{   for(int j=0;j<y+1;j++)
+				{   if(i==0||j==0)
+					t[i][j]=0;
+				}
+			}
+			for(int i=1;i<x+1;i++)
+			{   for(int j=1;j<y+1;j++)
+				{   if(s1[i-1]==s2[j-1])
+						t[i][j]=1+t[i-1][j-1];
+					else
+						t[i][j]=max(t[i-1][j],t[i][j-1]);
+				}
+			}
+			return t[x][y];
+	}
+###### Shortest Common Supersequence
+	int scs(string str1, string str2, int l1, int l2,int dp[100][100]) {
+		if(l1 == 0 ) return (l2);
+		if(l2 == 0) return l1;
+		if(dp[l1-1][l2-1] != 0)
+			return dp[l1-1][l2-1];
+		int len;
+		if(str1[l1-1] == str2[l2-1]) {
+			len = 1 + scs(str1, str2, l1-1, l2-1,dp);
+		}
+		else {
+			len = min(scs(str1,str2,l1-1,l2,dp)+1, scs(str1,str2,l1,l2-1,dp)+1);
+		}
+		dp[l1-1][l2-1] = len;
+		return len;
+
+	}
+###### Number of Unique Paths
+	for(i=0;i<n;i++){
+		for(j=0;j<m;j++){
+			if(i==0 || j==0)
+				mat[i][j]=1;
+			else
+				mat[i][j]=mat[i-1][j]+mat[i][j-1];
+		}
+	}
+	cout<<mat[n-1][m-1]<<endl;
+###### Subset Sum Problem
+	bool SUBSET(int n, int sum, int A[])
+	{
+		bool sub[n+1][sum+1];
+		for(int i = 0;i<=n;i++)
+			sub[i][0]=true;
+		for(int j = 1;j<=sum;j++)
+			sub[0][j]=false;
+		for(int i = 1;i<=n;i++)
+		{
+			for(int j = 1;j<=sum;j++)
+			{
+				if(A[i-1]<=j)
+					sub[i][j]=sub[i-1][j-A[i-1]] || sub[i-1][j]; 
+				else
+					sub[i][j]=sub[i-1][j];
+			}
+		}
+		return sub[n][sum];
+	}
+###### Maximize The Cut Segments
+	int maximizeTheCuts(int n, int x, int y, int z)
+	{
+		int dp[n+1];
+		dp[0]=0;
+		for(int i=1;i<=n;i++) dp[i] =-1;
+		for(int i=1;i<=n;i++)
+		{
+			if(i-x>=0) dp[i] = max(dp[i],dp[i-x]);
+			if(i-y>=0) dp[i] =max(dp[i],dp[i-y]);
+			if(i-z>=0) dp[i] =max(dp[i],dp[i-z]);
+			if(dp[i]!=-1) dp[i]++;
+		}
+		return (dp[n]>0)? dp[n]:0;
+	}
+###### 0 - 1 Knapsack Problem
+	int knapSack(int W, int wt[], int val[], int n) 
+	{ 
+	   int dp[n+1][W+1];
+	   for (int i = 0; i <= n; i++) { 
+			for (int w = 0; w <= W; w++) { 
+				if (i == 0 || w == 0) 
+					dp[i][w] = 0; 
+				else if (wt[i - 1] <= w) 
+					dp[i][w] = max(val[i - 1] + dp[i - 1][w - wt[i - 1]], dp[i - 1][w]); 
+				else
+					dp[i][w] = dp[i - 1][w]; 
+			} 
+		} 
+		return dp[n][W]; 
+	}
+###### Optimal Strategy For A Game
+	long long maximumAmount(int arr[], int n) 
+	{
+	   long long int dp[n][n];
+		dp[n-1][n-1]=arr[n-1];
+		for(int i=0;i<n-1;i++)
+		{  
+			dp[i][i+1] = max(arr[i],arr[i+1]);
+			dp[i][i]=arr[i];
+		}
+		for(int gap=3;gap<n;gap=gap+2)
+		{
+			for(int i=0;i+gap<n;i++)
+			{
+			  int j=i+gap;
+				dp[i][j]= max(arr[i]+min(dp[i+2][j],dp[i+1][j-1]),arr[j]+min(dp[i+1][j-1],dp[i][j-2]));
+			}
+		}
+		return dp[0][n-1];
+	}
+###### Egg Dropping Puzzle
+	int eggDrop(int n, int k) 
+	{
+		int dp[n+1][k+1];
+		for(int i=0; i<=n; i++)
+		{
+			dp[i][0] = 0;
+			dp[i][1] = 1;
+		}   
+		for(int i=0; i<=k; i++)
+			dp[1][i] = i;
+		for(int i=2; i<=n; i++)
+			for(int j=2; j<=k; j++)
+			{
+				dp[i][j] = INT_MAX;
+				for(int x=1; x<=j; x++)
+					dp[i][j] = min(dp[i][j],max(dp[i][j-x],dp[i-1][x-1]));
+				dp[i][j]++;
+			}
+		return dp[n][k];
+	}
+###### Stickler Thief
+	ll FindMaxSum(ll arr[], ll n)
+	{
+		ll dp[n];
+		if(n==0)
+		return 0;
+		dp[0]=arr[0];
+		if(n==1)
+		return arr[0];
+		dp[1]=max(arr[0],arr[1]);
+		if(n==2)
+		return dp[1];
+		for(ll i=2;i<n;i++){
+			dp[i]=max(dp[i-1], arr[i]+dp[i-2]);
+		}
+		return dp[n-1];
+	}
+## Segment Trees
+
+######  Range Sum Queries 
+	int construct(int ss, int se,int si,int arr[],int tree[]){
+		if(ss == se)
+		{
+			tree[si] = arr[ss];
+			return tree[si];
+		}
+		int mid = (ss+se)/2;
+		tree[si] = construct(ss,mid,2*si+1,arr,tree) + construct(mid+1,se,2*si+2,arr,tree);
+		return tree[si];   
+	}
+	int sum(int ss, int se,int si, int qs,int qe,int tree[]){
+		if(se < qs || ss > qe)
+			return 0;
+		if(ss >= qs && se <= qe)
+			return tree[si];
+		int mid = (ss+se)/2;
+		return sum(ss,mid,2*si+1,qs,qe,tree) + 
+				sum(mid+1,se,2*si+2,qs,qe,tree);   
+	}
+	void update(int ss,int se,int si,int pos,int mf, int tree[]){ 
+		if(ss > pos || se < pos)
+			return;
+		if(ss == se)
+		{
+			tree[si] += mf;
+			return;
+		}    
+		tree[si] += mf;
+		int mid = (ss+se)/2;
+		update(ss,mid,2*si+1,pos,mf,tree);
+		update(mid+1,se,2*si+2,pos,mf,tree);
+
+	}
+
+###### Range Min Max Queries
+	pair<int,int> make_tree(int ss,int se,int si,int arr[],pair<int,int> tree[]){
+		if(ss == se)
+		{
+			tree[si] = {arr[ss],arr[ss]};
+			return tree[si];
+		}
+		int mid = ss  + (se-ss)/2;
+		pair<int,int> l = make_tree(ss,mid,2*si+1,arr,tree);
+		pair<int,int> r = make_tree(mid+1,se,2*si+2,arr,tree);
+		tree[si] = {min(l.first,r.first),max(l.second,r.second)};
+		return tree[si];   
+	}
+	pair<int,int> range(int ss,int se,int si,int qs,int qe,pair<int,int> tree[]){
+		if(ss > qe || se < qs)
+			return {INT_MAX,0};
+		if(ss >= qs && se <= qe)
+			return tree[si];
+		int mid = ss  + (se-ss)/2;
+		pair<int,int> l = range(ss,mid,2*si+1,qs,qe,tree);
+		pair<int,int> r = range(mid+1,se,2*si+2,qs,qe,tree);
+		return {min(l.first,r.first),max(l.second,r.second)};   
+	}
+	pair<int,int> update(int ss,int se, int si,int pos,int mf,pair<int,int> tree[]){
+		if(ss > pos || se < pos)
+			return tree[si];
+		if(ss == se)
+		{
+			tree[si] = {mf,mf};
+			return tree[si];
+		}
+		int mid = ss  + (se-ss)/2;
+		pair<int,int> l = update(ss,mid,2*si+1,pos,mf,tree);
+		pair<int,int> r = update(mid+1,se,2*si+2,pos,mf,tree);
+		tree[si] = {min(l.first,r.first),max(l.second,r.second)};
+		return tree[si];
+
+	}
+###### Range Longest Correct Bracket Subsequence Queries
+	cin>>l>>r;
+	int j=0;
+	for(int i=l;i<=r;i++){
+		if(s[i]=='('){
+		mystack.push('(');
+		myvector.push_back(j);
+		}
+		else if(s[i]==')' && !mystack.empty()){
+			mystack.pop();
+			j=j+2;
+			myvector.push_back(j);
+		}
+		else if(s[i]==')' && mystack.empty()){
+			myvector.push_back(j);
+		}
+
+	}
+	cout<<*(myvector.end()-1)<<endl;
+###### Range GCD Queries
+	int make_tree(int ss,int se,int si,int arr[],int tree[]){
+		if(ss == se){
+			tree[si] = arr[ss];
+			return tree[si];
+		}
+		int mid = ss + (se-ss)/2;
+		tree[si] = __gcd(make_tree(ss,mid,2*si+1,arr,tree), make_tree(mid+1,se,2*si+2,arr,tree));
+		return tree[si];
+	}
+
+	int get_gcd(int ss,int se,int si,int qs,int qe,int tree[]){
+		if(ss > qe || se < qs){
+			return -1;
+		}
+		if(ss >= qs && se <= qe)
+			return tree[si];
+		int mid = ss + (se-ss)/2;
+		int le = get_gcd(ss,mid,2*si+1,qs,qe,tree);
+		int ri = get_gcd(mid+1,se,2*si+2,qs,qe,tree);
+		if(le == -1 || ri == -1)
+			return max(le,ri);
+		else
+			return __gcd(le,ri);
+	}
+
+	int update(int ss,int se,int si,int pos,int mf,int tree[]){
+		if(ss > pos || se < pos)
+			return tree[si];
+		if(ss == se){
+			tree[si] = mf;
+			return tree[si];
+		}
+		int mid = ss + (se-ss)/2;
+		int le = update(ss,mid,2*si+1,pos,mf,tree);
+		int ri = update(mid+1,se,2*si+2,pos,mf,tree);
+		tree[si] = __gcd(le,ri);
+		return tree[si];
+	}
+###### Largest Sum Contiguous Subarray in Range
+	// Initial Template for C++
+
+	#include <bits/stdc++.h>
+
+	using namespace std;
+
+	// Structure of node of the tree
+	struct node {
+		int sum, prefixSum, suffixSum, maxSubArraySum;
+
+		node() { sum = prefixSum = suffixSum = maxSubArraySum = INT_MIN; }
+	};
+
+	// Utility function to build the tree
+	void build(int arr[], node tree[], int low, int high, int index) {
+		if (low == high) {
+			tree[index].sum = arr[low];
+			tree[index].prefixSum = arr[low];
+			tree[index].suffixSum = arr[low];
+			tree[index].maxSubArraySum = arr[low];
+		} else {
+			int mid = (low + high) / 2;
+			build(arr, tree, low, mid, 2 * index + 1);
+			build(arr, tree, mid + 1, high, 2 * index + 2);
+			tree[index].sum = tree[2 * index + 1].sum + tree[2 * index + 2].sum;
+			tree[index].prefixSum =
+				max(tree[2 * index + 1].prefixSum,
+					tree[2 * index + 1].sum + tree[2 * index + 2].prefixSum);
+			tree[index].suffixSum =
+				max(tree[2 * index + 2].suffixSum,
+					tree[2 * index + 2].sum + tree[2 * index + 1].suffixSum);
+			tree[index].maxSubArraySum = max(
+				{tree[index].prefixSum, tree[index].suffixSum,
+				 tree[2 * index + 1].maxSubArraySum,
+				 tree[2 * index + 2].maxSubArraySum,
+				 tree[2 * index + 1].suffixSum + tree[2 * index + 2].prefixSum});
+		}
+	}
+
+	// function should update the array and as Tree as well accordingly
+	void update(int arr[], node tree[], int n, int index, int new_value);
+
+	// function should return the Max-Sum in the range
+	int query(int arr[], node tree[], int n, int l, int r);
+
+	// Driver Code
+	int main() {
+		int T;
+		cin >> T;
+		while (T--) {
+			int n, q, index, value, left, right, type;
+			int *arr = NULL;
+			cin >> n >> q;
+			arr = new int[n];
+			node tree[n * 4];
+			for (int i = 0; i < n; i++) cin >> arr[i];
+			build(arr, tree, 0, n - 1, 0);
+			for (int i = 0; i < q; i++) {
+				cin >> type;
+				if (type == 1) {
+					cin >> left >> right;
+					cout << query(arr, tree, n, left, right) << endl;
+				} else {
+					cin >> index >> value;
+					update(arr, tree, n, index, value);
+				}
+			}
+			delete[] arr;
+			arr = NULL;
+		}
+		return 0;
+	}// } Driver Code Ends
+
+
+	// User funciton template in C++
+
+	/*
+	struct node {
+		int sum, prefixSum, suffixSum, maxSubArraySum;
+
+		node() {
+			sum = prefixSum = suffixSum = maxSubArraySum = INT_MIN;
+		}
+	};
+	*/
+
+	// arr: given array
+	// tree: segment tree
+	// n: size of the array
+	// update index value in arr to new_value
+	void q(node tree[],int sb, int se, int l, int r,int si,node &x){
+		if(l>se||r<sb)
+		 return;
+		if(sb>=l&&se<=r)
+		{
+			if(x.sum==INT_MIN){
+				x=tree[si];
+				return;
+			}
+			node y;
+			y.sum=x.sum+tree[si].sum;
+			y.prefixSum=max(x.prefixSum,x.sum+tree[si].prefixSum);
+			y.suffixSum=max(tree[si].suffixSum,tree[si].sum+x.suffixSum);
+			y.maxSubArraySum=max(y.prefixSum,y.suffixSum);
+			y.maxSubArraySum=max(y.maxSubArraySum,x.maxSubArraySum);y.maxSubArraySum=max(y.maxSubArraySum,tree[si].maxSubArraySum);
+			y.maxSubArraySum=max(y.maxSubArraySum,x.suffixSum+tree[si].prefixSum);
+			x=y;
+			return;
+		}
+		int mid=sb+(se-sb)/2;
+		q(tree,sb,mid,l,r,2*si+1,x);
+		q(tree,mid+1,se,l,r,2*si+2,x);
+	}
+	void up(node tree[],int sb,int se,int si,int index,int new_value){
+		if(sb==se&&sb==index){
+			tree[si].sum=new_value;
+			tree[si].prefixSum=new_value;
+			tree[si].suffixSum=new_value;
+			tree[si].maxSubArraySum=new_value;
+			return;
+		}
+		int mid=sb+(se-sb)/2;
+		if(index>=sb&&index<=mid){
+			up(tree,sb,mid,2*si+1,index,new_value);
+			node x=tree[2*si+1];
+			node y=tree[2*si+2];
+			tree[si].sum=x.sum+y.sum;
+			tree[si].prefixSum=max(x.prefixSum,x.sum+y.prefixSum);
+			tree[si].suffixSum=max(y.suffixSum,y.sum+x.suffixSum);
+			tree[si].maxSubArraySum=max(tree[si].prefixSum,tree[si].suffixSum);
+			tree[si].maxSubArraySum=max(tree[si].maxSubArraySum,x.maxSubArraySum);tree[si].maxSubArraySum=max(y.maxSubArraySum,tree[si].maxSubArraySum);
+			tree[si].maxSubArraySum=max(tree[si].maxSubArraySum,x.suffixSum+y.prefixSum);
+		}
+		else if(index>=mid+1&&index<=se){
+			up(tree,mid+1,se,2*si+2,index,new_value);
+			node x=tree[2*si+1];
+			node y=tree[2*si+2];
+			tree[si].sum=x.sum+y.sum;
+			tree[si].prefixSum=max(x.prefixSum,x.sum+y.prefixSum);
+			tree[si].suffixSum=max(y.suffixSum,y.sum+x.suffixSum);
+			tree[si].maxSubArraySum=max(tree[si].prefixSum,tree[si].suffixSum);
+			tree[si].maxSubArraySum=max(tree[si].maxSubArraySum,x.maxSubArraySum);tree[si].maxSubArraySum=max(y.maxSubArraySum,tree[si].maxSubArraySum);
+			tree[si].maxSubArraySum=max(tree[si].maxSubArraySum,x.suffixSum+y.prefixSum);
+		}
+		return;
+	}
+	void update(int arr[], node tree[], int n, int index, int new_value) {
+		// code here
+		arr[index-1]=new_value;
+		up(tree,0,n-1,0,index-1,new_value);
+	}
+
+	// l and r are the range given in the problem
+	int query(int arr[], node tree[], int n, int l, int r) {
+		// code here
+		node x;
+		q(tree,0,n-1,l-1,r-1,0,x);
+		return x.maxSubArraySum;
+	}
+###### Range LCM Queries
+	int gcd(int a, int b){
+		if(!b) return a;
+		return gcd(b, a%b);
+	}
+
+	int lcm(int a, int b){
+		return (a*b)/(a > b ? gcd(a,b) : gcd(b,a));
+	}
+
+	void buildTree(int l, int h, int idx){
+		if(l > h) return;
+		if(l == h) {
+			tree[idx] = arr[l];
+			return;
+		}
+
+		int mid = (l+h)>>1, lc = idx<<1, rc = lc|1;
+		buildTree(l, mid, lc);
+		buildTree(mid+1, h, rc);
+		tree[idx] = lcm(tree[lc], tree[rc]);
+	}
+
+	void updateTree(int l, int h, int pos, int val, int idx){
+		if(l > h || l > pos || h < pos) return;
+		if(l == h && l == pos){
+			tree[idx] = val;
+			return;
+		}
+
+		int mid = (l+h)>>1, lc = idx<<1, rc = lc|1;
+		updateTree(l, mid, pos, val, lc);
+		updateTree(mid+1, h, pos, val, rc);
+		tree[idx] = lcm(tree[lc], tree[rc]);
+	}
+
+	int query(int l, int h, int ql, int qh, int idx){
+		if(l > h || l > qh || h < ql) return 0;
+		if(l >= ql && h <= qh){ 
+			return tree[idx];
+		}
+
+		int mid = (l+h)>>1, lc = idx<<1, rc = lc|1;
+		int a = query(l, mid, ql, qh, lc);
+		int b = query(mid+1, h, ql, qh, rc);
+		if (!a) return b;
+		if (!b) return a;
+		return lcm(a, b);
+	}
+######  Union-Find 
+	int findRoot(int i, int par[], int rank1[]) {
+		while(i!=par[i]) {
+			i = par[i];
+		}
+		return i;
+	}
+	void union_( int a, int b, int par[], int rank1[])
+	{ 
+		int x = findRoot(a, par, rank1);
+		int y = findRoot(b, par, rank1);
+		if(x==y)
+		{
+			return;
+		}
+		if(rank1[x]>=rank1[y])
+		{
+			rank1[x]++;
+			par[y] = par[x];
+		}
+		else 
+		{
+			rank1[y]++;
+			par[x] = par[y];
+		}
+		return;
+	}
+	bool isConnected(int x,int y, int par[], int rank1[]) 
+	{ 
+		return (findRoot(x, par, rank1) == findRoot(y, par, rank1));
+	}
+###### Number of Connected Components
+	int find_root(int x,int par[])
+	{
+		if(x == par[x])
+			return x;
+		par[x] = find_root(par[x],par);
+		return par[x];
+	}
+	void unionNodes( int a, int b, int  par[], int rank[], int n) {
+		int x_rep = find_root(a,par);
+		int y_rep = find_root(b,par);
+		if(x_rep == y_rep)
+			return;
+		else if(rank[x_rep] < rank[y_rep])
+			par[x_rep] = y_rep;
+		else if(rank[x_rep] > rank[y_rep])
+			par[y_rep] = x_rep;
+		else
+		{
+			par[y_rep] = x_rep;
+			rank[x_rep]++;
+		}
+	}
+	int findNumberOfConnectedNodes( int n, int par[], int rank1[]) {   
+		int count = 0;
+		for(int i=1; i<=n; i++)
+			if(i == par[i])
+				count++;
+		return count;
+	}
+
+###### Detect Cycle using DSU
+	int find(int x,int parent[])
+	{
+		if(parent[x]==x)
+		return x;
+		parent[x]=find(parent[x],parent);
+		return parent[x];
+	}
+	bool union_( int a, int b, int par[], int rank1[]) 
+	{
+		int a_rep=find(a,par);
+		int b_rep=find(b,par);
+		if(a_rep==b_rep)
+		return true;
+		if(rank1[a_rep]<rank1[b_rep])
+		par[a_rep]=b_rep;
+		else if(rank1[b_rep]<rank1[a_rep])
+		par[b_rep]=a_rep;
+		else
+		{
+			par[b_rep]=a_rep;
+			rank1[a_rep]++;
+		}
+		return false;
+	}
+	bool findCycle(vector<int> adj[], int parent[], int rank1[], int n, int e) 
+	{
+		for(int i=1;i<n;i++)
+		{
+			for(auto it=adj[i].begin();it!=adj[i].end();it++)
+			{
+				if(i<*it && union_(i,*it,parent,rank1))
+					return true;
+			}
+		}
+		return false;
+	}
+###### Minimum Spanning Tree using Kruskal
+	bool union1(int u,int v,int parent[],int rank1[])
+	{
+		while(parent[u]!=u)
+			u=parent[u];
+		while(parent[v]!=v)
+			v=parent[v];
+		if(u==v)
+			return false;
+		if(rank1[u]>rank1[v])
+		{
+			parent[v]=u;
+			rank1[u]=rank1[u]+rank1[v];
+		}
+		else
+		{
+			parent[v]=u;
+			rank1[v]=rank1[v]+rank1[u];
+		}   
+		return true;
+	}
+	long long int kruskalDSU(vector<pair<int, long long int>> adj[], int n, int m) {
+		int visited[n+1]={0};
+		vector<pair<long long int,pair<int,int>>>v;
+		for(int i=1;i<=n;i++)
+		{
+			for(int j=0;j<adj[i].size();j++)
+			{
+				int u=i,v1=adj[i][j].first;
+				long long int w=adj[i][j].second;
+				if(visited[v1]==0)
+				{
+					v.push_back({w,{u,v1}});        
+				}
+			}
+			visited[i]=1;
+		}
+		sort(v.begin(),v.end());
+		long long int ans=0;
+		int parent[n+1],rank1[n+1];
+		for(int i=1;i<=n;i++)
+		{
+			parent[i]=i;rank1[i]=1;
+		}
+		n--;
+		for(int i=0;i<v.size()&& n>0;i++)
+		{
+			int u,v1;
+			long long int w;
+			w=v[i].first;
+			u=v[i].second.first;
+			v1=v[i].second.second;
+			if(union1(u,v1,parent,rank1))
+			{
+				ans=ans+w;n--;
+			}   
+		} 
+		   return ans;
+	}
 ###### 
-######
 ###### 
 ###### 
 ###### 
-######
 ###### 
 ###### 
 ###### 
-######
+###### 
+###### 
+###### 
+###### 
+###### 
+###### 
+###### 
+
