@@ -734,87 +734,87 @@
         return -1;
     }
 ###### Merge three sorted arrays
-vector<int> mergeThree(vector<int>& A, vector<int>& B, vector<int>& C) 
-{
-    int m, n, o, i, j, k; 
-    // Get Sizes of three vectors 
-    m = A.size(); 
-    n = B.size(); 
-    o = C.size(); 
+	vector<int> mergeThree(vector<int>& A, vector<int>& B, vector<int>& C) 
+	{
+	    int m, n, o, i, j, k; 
+	    // Get Sizes of three vectors 
+	    m = A.size(); 
+	    n = B.size(); 
+	    o = C.size(); 
 
-    // Vector for storing output 
-    vector<int> D; 
-    D.reserve(m + n + o); 
+	    // Vector for storing output 
+	    vector<int> D; 
+	    D.reserve(m + n + o); 
 
-    i = j = k = 0; 
+	    i = j = k = 0; 
 
-    while (i < m && j < n && k < o) { 
+	    while (i < m && j < n && k < o) { 
 
-        // Get minimum of a, b, c 
-        int minn = min(min(A[i], B[j]), C[k]); 
+		// Get minimum of a, b, c 
+		int minn = min(min(A[i], B[j]), C[k]); 
 
-        // Put m in D 
-        D.push_back(minn); 
+		// Put m in D 
+		D.push_back(minn); 
 
-        // Increment i, j, k accordingly
-        if (minn == A[i]) 
-            i++; 
-        else if (minn == B[j]) 
-            j++; 
-        else
-            k++; 
-    } 
+		// Increment i, j, k accordingly
+		if (minn == A[i]) 
+		    i++; 
+		else if (minn == B[j]) 
+		    j++; 
+		else
+		    k++; 
+	    } 
 
-    // C has exhausted 
-    while (i < m && j < n) { 
-        if (A[i] <= B[j]) { 
-            D.push_back(A[i]); 
-            i++; 
-        } 
-        else { 
-            D.push_back(B[j]); 
-            j++; 
-        } 
-    } 
+	    // C has exhausted 
+	    while (i < m && j < n) { 
+		if (A[i] <= B[j]) { 
+		    D.push_back(A[i]); 
+		    i++; 
+		} 
+		else { 
+		    D.push_back(B[j]); 
+		    j++; 
+		} 
+	    } 
 
-    // B has exhausted 
-    while (i < m && k < o) { 
-        if (A[i] <= C[k]) { 
-            D.push_back(A[i]); 
-            i++; 
-        } 
-        else { 
-            D.push_back(C[k]); 
-            k++; 
-        } 
-    } 
+	    // B has exhausted 
+	    while (i < m && k < o) { 
+		if (A[i] <= C[k]) { 
+		    D.push_back(A[i]); 
+		    i++; 
+		} 
+		else { 
+		    D.push_back(C[k]); 
+		    k++; 
+		} 
+	    } 
 
-    // A has exhausted 
-    while (j < n && k < o) { 
-        if (B[j] <= C[k]) { 
-            D.push_back(B[j]); 
-            j++; 
-        } 
-        else { 
-            D.push_back(C[k]); 
-            k++; 
-        } 
-    } 
+	    // A has exhausted 
+	    while (j < n && k < o) { 
+		if (B[j] <= C[k]) { 
+		    D.push_back(B[j]); 
+		    j++; 
+		} 
+		else { 
+		    D.push_back(C[k]); 
+		    k++; 
+		} 
+	    } 
 
-    // A and B have exhausted 
-    while (k < o) 
-        D.push_back(C[k++]); 
+	    // A and B have exhausted 
+	    while (k < o) 
+		D.push_back(C[k++]); 
 
-    // B and C have exhausted 
-    while (i < m) 
-        D.push_back(A[i++]); 
+	    // B and C have exhausted 
+	    while (i < m) 
+		D.push_back(A[i++]); 
 
-    // A and C have exhausted 
-    while (j < n) 
-        D.push_back(B[j++]); 
+	    // A and C have exhausted 
+	    while (j < n) 
+		D.push_back(B[j++]); 
 
-    return D;  
-} 
+	    return D;  
+	} 
 ###### Merge Without Extra Space
     void merge(int arr1[], int arr2[], int n, int m) 
     {           int i=n-1,j=0;
@@ -1170,18 +1170,18 @@ vector<int> mergeThree(vector<int>& A, vector<int>& B, vector<int>& C)
         }
     }
 ###### Print Matrix in snake Pattern
-void print(int mat[][100],int n)
-{
-   for (int i = 0; i < n; i++) {
-        if (i % 2 == 0) {
-            for (int j = 0; j < n; j++)
-                cout << mat[i][j] << " ";
-        } else {
-            for (int j = n - 1; j >= 0; j--)
-                cout << mat[i][j] << " ";
-        }
-    }
-}
+	void print(int mat[][100],int n)
+	{
+	   for (int i = 0; i < n; i++) {
+			if (i % 2 == 0) {
+				for (int j = 0; j < n; j++)
+					cout << mat[i][j] << " ";
+			} else {
+				for (int j = n - 1; j >= 0; j--)
+					cout << mat[i][j] << " ";
+			}
+		}
+	}
 ###### Transpose of Matrix
     void transpose( int A[][N],int n) 
     {       int p;
@@ -5015,17 +5015,17 @@ int countSmallerRight(int a[], int n) {
 
 ## Dynamic Programming
 ###### Fibonacci Numbers
-long long findNthFibonacci(int number)
-{
-    long long int dp[number+1]; 
-    dp[0]=0; 
-    dp[1]=1; 
-    for(long long int i=2;i<=number;i++)
-    {
-        dp[i]=dp[i-1]+dp[i-2];
-    }  
-    return dp[number];
-}
+	long long findNthFibonacci(int number)
+	{
+		long long int dp[number+1]; 
+		dp[0]=0; 
+		dp[1]=1; 
+		for(long long int i=2;i<=number;i++)
+		{
+			dp[i]=dp[i-1]+dp[i-2];
+		}  
+		return dp[number];
+	}
 ###### Coin Change - Minimum number of coins
 	long long minimumNumberOfCoins(int coins[],int m,int V)
 	{
